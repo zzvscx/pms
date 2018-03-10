@@ -4,3 +4,4 @@ __pycache__/
 */__pycache__/
 .env
 db.*
+.vscode/
