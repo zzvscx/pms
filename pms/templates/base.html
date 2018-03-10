@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'pms/favicon.ico' %}">
+
+    <title>首页</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href=" {% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href=" {% static 'bootstrap/css/bootstrap-theme.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'pms/css/base.css' %}" rel="stylesheet">
+    {% block head_extras %}
+
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{%  url 'index' %}">长安大学学生成绩管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{%  url 'index' %}">首页</a></li>
+            <li><a href="{%  url 'about' %}">关于</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% if request.user.is_authenticated %} {{ request.user.username }}{%else%}请登录 {% endif %} <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                {% if request.user.is_authenticated %}
+                  <li><a href="#">个人信息</a></li>
+                  <li><a href="#">退出登录</a></li>
+                {% else %}
+                  <li><a href="#">登录</a></li>
+                {% endif %}
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    {% block content %}
+
+    {% endblock %}
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    {% block js_extras %}
+    {% endblock %}
+  </body>
