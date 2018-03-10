@@ -25,8 +25,8 @@ SECRET_KEY = '&&k5-2d-j31)wkhir%&lnfx(2c5^a-mk9(x*!&r*xgp^sfc!&@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
+USE_TZ = False
 
 # Application definition
 
@@ -81,6 +81,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "useraccount.User"
+AUTHENTICATION_BACKENDS = ('useraccount.views.StudentBackend',)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -104,9 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
