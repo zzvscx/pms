@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block head_extras %}
+<link href= "{% static 'useraccount/css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form class="form-signin" action="{%  url 'login' %}" method="post">
+      {% csrf_token %}
+      <h2 class="form-signin-heading">请登录</h2>
+      {{error_message}}
+      <label for="inputEmail" class="sr-only">学号/用户名</label>
+      <input name='username' type="text" id="inputText" class="form-control" placeholder="学号/用户名" required autofocus>
+      <label for="inputPassword" class="sr-only">密码</label>
+      <input name='password' type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+    </form>
+</div>
+{% endblock %}

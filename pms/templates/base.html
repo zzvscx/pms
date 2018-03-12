@@ -48,9 +48,9 @@
               <ul class="dropdown-menu">
                 {% if request.user.is_authenticated %}
                   <li><a href="#">个人信息</a></li>
-                  <li><a href="#">退出登录</a></li>
+                  <li><a href="{% url 'logout' %}">退出登录</a></li>
                 {% else %}
-                  <li><a href="#">登录</a></li>
+                  <li><a href="{% url 'login' %}">登录</a></li>
                 {% endif %}
               </ul>
             </li>
