@@ -13,12 +13,63 @@ AbstractUser._meta.get_field('username').max_length = 36
 
 
 class User(AbstractUser):
-    stuId = models.CharField(max_length=32,verbose_name=u'学号/教职工编号')
+    stuId = models.CharField(max_length=32, verbose_name=u'学号/教职工编号')
+    grade = models.CharField(max_length=32, verbose_name=u'班级')
+    intake = models.DateField(verbose_name=u'入学时间')
+    academy = models.ForeignKey(Academy, verbose_name=u'学院')
+    department = models.ForeignKey(Department, verbose_name=u'系')
 
     def __unicode__(self):
         return self.username
 
     def __str__(self):
         return self.username
+
+
+class Academy(models.Model):
+    name = models.CharField(max_length=64, verbose_name=u'学院名')
+    admin = models.ForeignKey(User, null=True, blank=True, verbose_name=u'院长')
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=64, verbose_name=u'系名')
+    admin = models.ForeignKey(User, null=True, blanl=True, verbose_name=u'系主任')
+
+    def __unicode__(self):
+        return self.name, self.admin
+
+    def __str__(self):
+        return self.name, self.admin
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=64, verbose_name=u'课程名')
+    admin = models.ManyToManyField(User, verbose_name=u'任课教师')
+    total_points = models.IntegerField(default=100, verbose_name=u'总分')
+    rate = models.IntegerField(default=100,verbose_name=u'考试成绩占比')
+
+    def __unicode__(self):
+        return self.name, self.admin
+
+    def __str__(self):
+        return self.name, self.admin
+
+
+class UserScore(models.Model):
+    user = models.ForeignKey(User)
+    course = models.ForeignKey(Course)
+    test_points = models.FloatField(verbose_name=u'考试成绩')
+    extre_points = models.FloatField(verbose_name=u'平时分')
+
+    @property
+    def total_points(self):
+        return (self.test_points * self.course.rate + 
+                self.extre_points * (100-self.course.rate))/100
 
 
