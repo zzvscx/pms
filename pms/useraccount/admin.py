@@ -6,11 +6,11 @@ from .models import User, Academy, Department, Grade, Course, UserScore
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 
+
 class UserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(
         label='Password confirmation', widget=forms.PasswordInput)
-    
 
     class Meta:
         model = User
@@ -50,7 +50,8 @@ class UserAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     fieldsets = [
-        (None, {'fields': ('stuId', 'username', 'password', 'grade', 'intake')}),
+        (None, {'fields': ('stuId', 'username',
+                           'name', 'password', 'grade', 'intake')}),
         (u'权限', {'fields': ('is_active', 'is_staff', 'is_superuser',
                             'groups', 'user_permissions')}),
         (u'重要日期', {'fields': ('last_login', 'date_joined')}),

@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from collections import OrderedDict
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
@@ -41,13 +42,14 @@ class Department(models.Model):
     admin = models.ForeignKey(User, null=True, blank=True, verbose_name=u'系主任')
 
     def __unicode__(self):
-        return self.name, self.admin
+        return self.name
 
     def __str__(self):
-        return self.name, self.admin
+        return self.name
 
 class Grade(models.Model):
-    name = models.CharField(max_length=32,verbose_name=u'班级')
+    name = models.CharField(max_length=128,null=True,blank=True, verbose_name=u'班级')
+    gradeId = models.CharField(max_length=32,verbose_name=u'班号')
     department = models.ForeignKey(Department,verbose_name='系')
 
 
@@ -58,10 +60,10 @@ class Course(models.Model):
     rate = models.IntegerField(default=100,verbose_name=u'考试成绩占比')
 
     def __unicode__(self):
-        return self.name, self.admin
+        return self.name
 
     def __str__(self):
-        return self.name, self.admin
+        return self.name
 
 
 class UserScore(models.Model):

@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+{% load static %}
+
+
+{% block content %}
+<div style="margin-left:600px;">
+    <h1>个人信息</h1>
+</div>
+<div class="row">
+    <div  style="margin-left:400px;" class="col-md-6">
+        <table style="width: 100%;margin:auto" class="table">
+        <tbody>
+            <tr>
+                <td>姓名：</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <td>学号：</td>
+                <td>{{ user.stuId }}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>学院：</td>
+                <td>{{ user.grade.department.academy }}</td>
+                <td>{{ user.grade.department.academy.admin }}</td>
+            </tr>
+            <tr>
+                <td>系：</td>
+                <td>{{ user.grade.department }}</td>
+                <td>{{ user.grade.department.admin }}</td>
+            </tr>
+            <tr>
+                <td>班级：</td>
+                <td>{{ user.grade.name }}</td>
+                <td>{{ user.grade.gradeId }}</td>
+            </tr>
+            <tr>
+                <td>入学时间：</td>
+                <td>{{ user.intake }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

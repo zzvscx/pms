@@ -9,8 +9,7 @@
 <div class="container">
     <form class="form-signin" action="{%  url 'login' %}" method="post">
       {% csrf_token %}
-      <h2 class="form-signin-heading">请登录</h2>
-      {{error_message}}
+      <h2 class="form-signin-heading">个人信息</h2>
       <label for="inputEmail" class="sr-only">学号/用户名</label>
       <input name='username' type="text" id="inputText" class="form-control" placeholder="学号/用户名" required autofocus>
       <label for="inputPassword" class="sr-only">密码</label>
