@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
-from .models import User, Academy, Department, Grade, Course, UserScore
+from .models import User, UserScore
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 
@@ -61,32 +61,4 @@ class UserAdmin(UserAdmin):
                     'intake', 'is_active', 'is_staff')
     search_fields = ('grade', 'stuId', 'username')
     list_filter = ('is_staff', 'is_active')
-    raw_id_fields = ('grade',)
-
-
-@admin.register(Academy)
-class AcademyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'admin')
-    search_fields = ('name', 'admin')
-    raw_id_fields = ('admin',)
-
-
-@admin.register(Department)
-class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'admin', 'academy')
-    search_fields = ('name', 'admin', 'academy')
-    raw_id_fields = ('admin', 'academy')
-
-
-@admin.register(Grade)
-class GradeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'department')
-    search_fields = ('name', 'department')
-    raw_id_fields = ('department',)
-
-
-@admin.register(Course)
-class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'total_points', 'rate')
-    search_fields = ('name',)
-    raw_id_fields = ('admin',)
+    raw_id_fields = ('team',)

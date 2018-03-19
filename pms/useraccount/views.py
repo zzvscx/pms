@@ -49,3 +49,12 @@ def user_detail(request):
     if not user:
         raise Http404
     return render(request, 'useraccount/user_detail.html', locals())
+
+
+@login_required
+def user_points(request):
+    user = request.user
+    if not user:
+        raise Http404
+
+    return render(request, 'useraccount/achievement.html', locals())
