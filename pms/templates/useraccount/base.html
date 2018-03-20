@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block head_extras %}
+<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">个人信息 <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">我的课表</a></li>
+        <li><a href="#">我的成绩</a></li>
+        </ul>
+    </div>
+    {% block table %}
+    {% endblock %}
+</div>
+
+{% endblock %}

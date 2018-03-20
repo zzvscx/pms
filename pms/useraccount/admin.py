@@ -6,6 +6,7 @@ from .models import User, UserScore
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 
+
 class UserChangeForm(UserChangeForm):
     username = forms.CharField(max_length=36)
 
@@ -23,7 +24,8 @@ class UserAdmin(UserAdmin):
     form = UserChangeForm
     fieldsets = [
         (None, {'fields': ('stuId', 'username',
-                           'name', 'password', 'team', 'intake')}),
+                           'name', 'sex','password', 'team', 'term', 'intake', 'at_school', 'have_roll', 'roll_in_school',
+                           'education','campus','desc')}),
         (u'权限', {'fields': ('is_active', 'is_staff', 'is_superuser',
                             'groups', 'user_permissions')}),
         (u'重要日期', {'fields': ('last_login', 'date_joined')}),
