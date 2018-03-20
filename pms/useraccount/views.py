@@ -5,7 +5,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
-from .models import User
+from .models import User, UserScore
 # Create your views here.
 
 
@@ -53,8 +53,5 @@ def user_detail(request):
 
 @login_required
 def user_points(request):
-    user = request.user
-    if not user:
-        raise Http404
-
+    userscores = UserScore.objects.filter(user=request.user)
     return render(request, 'useraccount/achievement.html', locals())

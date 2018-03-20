@@ -23,8 +23,9 @@ class GradeAdmin(admin.ModelAdmin):
     raw_id_fields = ('department',)
 
 
-# @admin.register(Course)
-# class CourseAdmin(admin.ModelAdmin):
-#     list_display = ('name', 'total_points', 'rate')
-#     search_fields = ('name',)
-#     raw_id_fields = ('admin',)
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code', 'numbering','category')
+    search_fields = ('name', 'code','numbering')
+    list_filter = ('category',)
+    raw_id_fields = ('admin',)

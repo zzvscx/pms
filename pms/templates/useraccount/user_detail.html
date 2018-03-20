@@ -25,18 +25,18 @@
             </tr>
             <tr>
                 <td>学院：</td>
-                <td>{{ user.grade.department.academy }}</td>
-                <td> {%if user.grade.department.academy.admin %} {{ user.grade.department.academy.admin }} {%endif%} </td>
+                <td>{{ user.team.department.academy }}</td>
+                <td> {%if user.team.department.academy.admin %} {{ user.team.department.academy.admin }} {%endif%} </td>
             </tr>
             <tr>
                 <td>系：</td>
-                <td>{{ user.grade.department }}</td>
-                <td>{%if user.grade.department.admin %}{{ user.grade.department.admin }}{% endif %}</td>
+                <td>{{ user.team.department }}</td>
+                <td>{%if user.team.department.admin %}{{ user.team.department.admin }}{% endif %}</td>
             </tr>
             <tr>
                 <td>班级：</td>
-                <td>{{ user.grade.name }}</td>
-                <td>{{ user.grade.gradeId }}</td>
+                <td>{{ user.team.name }}</td>
+                <td>{{ user.team.gradeId }}</td>
             </tr>
             <tr>
                 <td>入学时间：</td>

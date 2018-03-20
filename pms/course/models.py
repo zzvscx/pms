@@ -36,7 +36,7 @@ class Grade(models.Model):
     name = models.CharField(max_length=128, null=True,
                             blank=True, verbose_name=u'班级')
     gradeId = models.CharField(max_length=32, verbose_name=u'班号')
-    department = models.ForeignKey('useraccount.User', verbose_name='系')
+    department = models.ForeignKey(Department, verbose_name='系')
 
 
 class Category(models.Model):

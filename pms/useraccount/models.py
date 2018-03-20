@@ -15,11 +15,11 @@ AbstractUser._meta.get_field('username').max_length = 36
 
 
 class User(AbstractUser):
-    name = models.CharField(default='', max_length=32, verbose_name=u'姓名')
-    stuId = models.CharField(max_length=32, verbose_name=u'学号/教职工编号')
+    name = models.CharField(default='', null=True, blank=True,max_length=32, verbose_name=u'姓名')
+    stuId = models.CharField(max_length=32, null=True, blank=True, verbose_name=u'学号/教职工编号')
     team = models.ForeignKey(
         Grade, null=True, blank=True, max_length=32, verbose_name=u'班级')
-    intake = models.DateField(verbose_name=u'入学时间')
+    intake = models.DateField(null=True, blank=True,verbose_name=u'入学时间')
 
     def __unicode__(self):
         return self.name
