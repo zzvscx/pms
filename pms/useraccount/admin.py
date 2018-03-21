@@ -36,3 +36,10 @@ class UserAdmin(UserAdmin):
     search_fields = ('team', 'stuId', 'username')
     list_filter = ('is_staff', 'is_active')
     raw_id_fields = ('team',)
+
+
+@admin.register(UserScore)
+class UserScoreAdmin(admin.ModelAdmin):
+    list_display = ('user','course','midterm','final_exam','usual','experimental','retest','total_points')
+    search_fields = ('user','course')
+    raw_id_fields = ('user','course')

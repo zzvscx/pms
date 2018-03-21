@@ -54,4 +54,8 @@ def user_detail(request):
 @login_required
 def user_points(request):
     userscores = UserScore.objects.filter(user=request.user)
+    all_score = []
+    for score_term in set(userscores.values_list('course__year','course__term')):
+        userscores.filter(course__year=score_term[0],course__term=score_term[1])
+        all_score.append()
     return render(request, 'useraccount/achievement.html', locals())

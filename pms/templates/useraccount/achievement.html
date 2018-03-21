@@ -1,18 +1,47 @@
-{% extends 'base.html'%}
+{% extends 'useraccount/base.html'%}
 {% load static %}
 
 {% block title %}
     <title>我的成绩</title>
 {% endblock %}
 
-{% block content %}
+{% block head_extras %}
+<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
+<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+{% endblock %}
 
-
+{% block table %}
+<div style="margin-left:400px;">
+    <h1>汇总</h1>
+</div>
 <div class="row">
-    <div style="margin-left:400px;" class="col-md-6">
-        <table style="width: 100%;margin:auto" class="table">
-            
+    <div style="margin-left:300px;" class="table-responsive">
+        <table style="width: 100%;margin:auto" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>学年度</th>
+                    <th>学期</th>
+                    <th>门数</th>
+                    <th>总学分</th>
+                    <th>平均绩点</th>
+                </tr>
+            </thead>
             <tbody>
+                {% for score in allscore %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan=2><strong>在校汇总</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Academy, Department, Grade, Course
+from .models import *
+
+
 @admin.register(Academy)
 class AcademyAdmin(admin.ModelAdmin):
     list_display = ('name', 'admin')
@@ -25,7 +27,19 @@ class GradeAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'code', 'numbering','category')
-    search_fields = ('name', 'code','numbering')
+    list_display = ('name', 'code', 'numbering', 'category')
+    search_fields = ('name', 'code', 'numbering')
     list_filter = ('category',)
     raw_id_fields = ('admin',)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
+@admin.register(SchoolTerm)
+class SchoolTermAdmin(admin.ModelAdmin):
+    list_display = ('year', 'term')
+    search_fields = ('year',)
