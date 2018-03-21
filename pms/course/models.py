@@ -53,19 +53,22 @@ class Category(models.Model):
 
 
 class SchoolTerm(models.Model):
-    year = models.CharField(max_length=32,verbose_name=u'学年')
-    term = models.CharField(max_length=4, verbose_name=u'学期')
+    name = models.CharField(max_length=32, verbose_name=u'学年学期')
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
     @classmethod
     def add_schoolterm(cls):
         date_from = 2000
         for i in range(100):
             date_from += 1
-            year = '{}-{}'.format(date_from,date_from+1)
-            cls.objects.get_or_create(year=year,term='1')
-            cls.objects.get_or_create(year=year,term='2')
-
-
+            name = '{}-{}'.format(date_from, date_from+1)
+            cls.objects.get_or_create(name=name+' 1')
+            cls.objects.get_or_create(name=name+' 2')
 
 
 class Course(models.Model):
@@ -74,8 +77,8 @@ class Course(models.Model):
     numbering = models.CharField(max_length=32, verbose_name=u'课程序号')
     category = models.ForeignKey(Category, verbose_name=u'课程类别')
     admin = models.ManyToManyField('useraccount.User', verbose_name=u'任课教师')
-    school_term = models.ForeignKey(SchoolTerm,verbose_name=u'学年学期')
-    total_points = models.IntegerField(default=100, verbose_name=u'总分')
+    school_term = models.ForeignKey(SchoolTerm, verbose_name=u'学年学期')
+    total_score = models.IntegerField(default=100, verbose_name=u'总分')
     credit = models.FloatField(verbose_name=u'学分')
     midterm = models.FloatField(
         default=0, verbose_name=u'期中考试比例', help_text=u'按小数填写，如 0.1')

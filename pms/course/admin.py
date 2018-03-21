@@ -41,5 +41,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(SchoolTerm)
 class SchoolTermAdmin(admin.ModelAdmin):
-    list_display = ('year', 'term')
-    search_fields = ('year',)
+    list_display = ('name',)

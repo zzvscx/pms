@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.backends import ModelBackend
-from django.db.models import Q
+from django.db.models import Q, Sum, Avg, Count
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from .models import User, UserScore
@@ -53,9 +53,12 @@ def user_detail(request):
 
 @login_required
 def user_points(request):
-    userscores = UserScore.objects.filter(user=request.user)
-    all_score = []
-    for score_term in set(userscores.values_list('course__year','course__term')):
-        userscores.filter(course__year=score_term[0],course__term=score_term[1])
-        all_score.append()
+    userscores = UserScore.objects.filter(
+        user=request.user).order_by('course__school_term')
+    term_score  = []
+    for scores in userscores.values('course__school_term__name').annotate(
+        count=Count('id'), sum_points=Sum('points'), avg_points=Avg('points')):
+        term_score.append([scores['course__school_term__name'],scores['count'],scores['sum_points'],scores['avg_points']])
+    all_score = userscores.aggregate(sum_points=Sum('points'),avg_points=Avg('points'))
+    all_score = [userscores.count(),all_score['sum_points'],all_score['avg_points']] 
     return render(request, 'useraccount/achievement.html', locals())

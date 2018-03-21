@@ -11,39 +11,92 @@
 {% endblock %}
 
 {% block table %}
-<div style="margin-left:400px;">
-    <h1>汇总</h1>
-</div>
+<br>
+<br>
 <div class="row">
     <div style="margin-left:300px;" class="table-responsive">
         <table style="width: 100%;margin:auto" class="table table-striped">
             <thead>
                 <tr>
-                    <th>学年度</th>
-                    <th>学期</th>
+                    <th colspan=4><strong>成绩汇总</strong></th>
+                </tr>
+                <tr>
+                    <th>学年学期</th>
                     <th>门数</th>
                     <th>总学分</th>
                     <th>平均绩点</th>
                 </tr>
             </thead>
             <tbody>
-                {% for score in allscore %}
+                {% for score in term_score %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    {% for x in score %}
+                    <td>{{x }}</td>
+                    {% endfor %}
                 </tr>
                 {% endfor %}
                 <tr>
-                    <td colspan=2><strong>在校汇总</strong></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><strong>在校汇总</strong></td>
+                    {% for score in all_score  %}
+                    <td>{{score}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td colspan=4><td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+<br>
+<br>
+
+<div class="row">
+        <div style="margin-left:300px;" class="table-responsive">
+            <table style="width: 100%;margin:auto" class="table table-striped">
+                <thead>
+                    <tr>
+                    <th colspan=14><strong>成绩列表</strong></th>
+                    </tr>
+                    <tr>
+                        <th>学年学期</th>
+                        <th>课程代码</th>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>课程类别</th>
+                        <th>学分</th>
+                        <th>期中成绩</th>
+                        <th>期末成绩</th>
+                        <th>平时成绩</th>
+                        <th>补考成绩</th>
+                        <th>总评成绩</th>
+                        <th>实验成绩</th>
+                        <th>最终</th>
+                        <th>绩点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in userscores %}
+                    <tr>
+                        <td>{{ score.course.school_term }}</td>
+                        <td>{{ score.course.code }}</td>
+                        <td>{{ score.course.numbering }}</td>
+                        <td>{{ score.course.name }}</td>
+                        <td>{{ score.course.category.name }}</td>
+                        <td>{{ score.course.credit }}</td>
+                        <td>{% if score.midterm %}{{ score.midterm }}{% endif %}</td>
+                        <td>{% if score.final_exam %}{{ score.final_exam }}{% endif %}</td>
+                        <td>{% if score.usual %}{{ score.usual }}{%endif%}</td>
+                        <td>{% if score.retest %}{{ score.retest }}{% endif %}</td>
+                        <td>{% if score.total_score %}{{ score.total_score }}{% endif %}</td>
+                        <td>{% if score.experimental %}{{ score.experimental }}{% endif %}</td>
+                        <td>{% if score.total_score %}{{ score.total_score }}{% endif %}</td>                        
+                        <td>{% if score.points %}{{ score.points }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+
 {% endblock %}

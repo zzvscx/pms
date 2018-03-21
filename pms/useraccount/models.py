@@ -6,6 +6,8 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save,pre_save
+from django.dispatch import receiver
 from collections import OrderedDict
 from course.models import Grade, Course
 from datetime import datetime, timedelta
@@ -73,11 +75,11 @@ class User(AbstractUser):
     @property
     def str_method(self):
         return METHOD_CHOICES[self.method][1]
-    
+
     @property
     def str_education(self):
         return EDUCATION_CHOICES[self.education][1]
-    
+
     @property
     def str_campus(self):
         return CAMPUS_CHOICES[self.campus][1]
@@ -92,6 +94,8 @@ class UserScore(models.Model):
     experimental = models.FloatField(
         null=True, blank=True, verbose_name=u'实验成绩')
     retest = models.FloatField(null=True, blank=True, verbose_name=u'补考成绩')
+    total_score = models.FloatField(null=True, blank=True, verbose_name=u'总分')
+    points = models.FloatField(null=True, blank=True, verbose_name=u'绩点')
 
     @property
     def total_points(self):
@@ -106,3 +110,20 @@ class UserScore(models.Model):
     @property
     def grade_point_average(self):
         return self.total_points / self.course.total_points * self.course.credit
+
+
+@receiver(pre_save,sender=UserScore)
+def update_data(*args,**kwargs):
+    instance = kwargs.get('instance')
+    course = instance.course
+    if instance.final_exam:
+        if instance.retest:
+            instance.total_score = instance.retest
+        else:
+            instance.total_score = (instance.midterm or 0) * course.midterm +\
+                                    (instance.final_exam or 0) * course.final_exam +\
+                                    (instance.usual or 0) * course.usual +\
+                                    (instance.experimental or 0) * course.experimental
+        instance.points = instance.total_score / course.total_score * course.credit
+        
+
