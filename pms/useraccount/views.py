@@ -62,3 +62,8 @@ def user_points(request):
     all_score = userscores.aggregate(sum_points=Sum('points'),avg_points=Avg('points'))
     all_score = [userscores.count(),all_score['sum_points'],all_score['avg_points']] 
     return render(request, 'useraccount/achievement.html', locals())
+
+@login_required
+def download_points_excel(request):
+    pass
+    
