@@ -77,3 +77,12 @@
 </div>
 <br/>
 {% endblock %}
+
+{% block js_extras %}
+<script>
+$('#user_detail').addClass('active')
+$('li').click(function(){
+    $(this).addClass('active').siblings().removeClass('active')
+  })
+</script>
+{% endblock %}

@@ -8,6 +8,7 @@ from django.db.models import Q, Sum, Avg, Count
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from .models import User, UserScore
+from course.models import Course
 from lib.excel import generate_xls_multisheet
 # Create your views here.
 
@@ -91,4 +92,22 @@ def user_points(request):
         response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(name.encode('utf8'))
         return response
     return render(request, 'useraccount/achievement.html', locals())
+
+
+@login_required
+def courses(request):
+    if not request.user.is_staff:
+        raise Http404
+    courses = Course.objects.filter(admin__in=[request.user,]).order_by('created_at')
+    return render(request, 'useraccount/courses.html',locals())
+
+@login_required
+def course_detail(request,pk):
+    if not request.user.is_staff:
+        raise Http404
+    course = Course.objects.get(admin=request.user,pk=pk)
+    userscores = UserScore.objects.filter(course=course)
+    print userscores
+    return render(request,'useraccount/course_detail.html',locals())
+    
 

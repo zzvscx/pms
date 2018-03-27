@@ -106,6 +106,10 @@ $(document).ready(function(){
   $("#btn_download").click(function(){
     window.location=('/useraccount/points/?download=True')
   });
+  $('#achievement').addClass('active')
+  $('li').click(function(){
+    $(this).addClass('active').siblings().removeClass('active')
+  })
 });
 </script>
 {% endblock %}

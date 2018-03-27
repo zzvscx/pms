@@ -89,6 +89,8 @@ class Course(models.Model):
     experimental = models.FloatField(
         default=0, verbose_name=u'实验成绩比例', help_text=u'按小数填写，如0.1')
     desc = models.TextField(null=True, blank=True, verbose_name=u'备注')
+    created_at = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
+
 
     def __unicode__(self):
         return self.name

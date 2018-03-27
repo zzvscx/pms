@@ -1,0 +1,62 @@
+{% extends 'useraccount/base.html'%}
+{% load static %}
+
+{% block title %}
+    <title>教务管理</title>
+{% endblock %}
+
+{% block head_extras %}
+<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
+<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block sidebar %}
+<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
+<li id='my_course'><a href="#">我的课表</a></li>
+{% endblock %}
+
+{% block table %}
+<div class="row">
+        <div style="margin-left:300px;" class="table-responsive">
+            <table style="width: 100%;margin:auto" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>英文名</th>
+                        <th>学号</th>
+                        <th>期中考试成绩</th>
+                        <th>期末考试成绩</th>
+                        <th>平时成绩</th>
+                        <th>实验成绩比例</th>
+                        <th>补考成绩</th>
+                        <th>总分</th>
+                        <th>绩点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in userscores %}
+                    <tr>
+                        <th>{{ score.user.name }}</th>
+                        <th>{{ score.user.username }}</th>
+                        <th>{{ score.user.stuId }}</th>
+                        <td>{% if score.midterm %}{{ score.midterm }}{% endif %}</td>
+                        <td>{% if score.final_exam %}{{ score.final_exam }}{% endif %}</td>
+                        <td>{% if score.usual %}{{ score.usual }}{%endif%}</td>
+                        <td>{% if score.experimental %}{{ score.experimental }}{% endif %}</td>                        
+                        <td>{% if score.retest %}{{ score.retest }}{% endif %}</td>
+                        <td>{% if score.total_score %}{{ score.total_score }}{% endif %}</td>
+                        <td>{% if score.points %}{{ score.points }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+{% endblock %}
+
+{% block js_extras %}
+<script>
+$('#courses').addClass('active')
+$('li').click(function(){
+    $(this).addClass('active').siblings().removeClass('active')
+    })
+</script>
+{% endblock %}
