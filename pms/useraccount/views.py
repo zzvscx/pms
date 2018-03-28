@@ -75,7 +75,7 @@ def user_points(request):
     if request.GET.get('download', False):
         data = [[u'学年学期', u'门数', u'总学分', u'平均绩点'], ]
         data.extend(term_score)
-        all_score.insert(0,u'在校汇总')
+        all_score.insert(0, u'在校汇总')
         data.append(all_score)
         all_data = [[u'学年学期', u'课程代码', u'课程编号', u'课程名称', u'课程类别', u'学分',
                      u'期中成绩', u'期末成绩', u'平时成绩', u'补考成绩', u'总评成绩', u'实验成绩', u'最终成绩', u'绩点'], ]
@@ -87,9 +87,11 @@ def user_points(request):
                              userscore.experimental, userscore.total_score, userscore.points])
         name = u'{}{}成绩清单.xls'.format(datetime.now().strftime(
             '%Y%m%d'), request.user.name or request.user.username)
-        excel = generate_xls_multisheet([{'name': u'成绩列表', 'data': data}, {'name': u'成绩汇总', 'data': all_data}])
+        excel = generate_xls_multisheet([{'name': u'成绩列表', 'data': data}, {
+                                        'name': u'成绩汇总', 'data': all_data}])
         response = HttpResponse(excel, content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(name.encode('utf8'))
+        response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(
+            name.encode('utf8'))
         return response
     return render(request, 'useraccount/achievement.html', locals())
 
@@ -98,16 +100,33 @@ def user_points(request):
 def courses(request):
     if not request.user.is_staff:
         raise Http404
-    courses = Course.objects.filter(admin__in=[request.user,]).order_by('created_at')
-    return render(request, 'useraccount/courses.html',locals())
+    courses = Course.objects.filter(
+        admin__in=[request.user, ]).order_by('created_at')
+    return render(request, 'useraccount/courses.html', locals())
+
 
 @login_required
-def course_detail(request,pk):
+def course_detail(request, pk):
     if not request.user.is_staff:
         raise Http404
-    course = Course.objects.get(admin=request.user,pk=pk)
+    course = Course.objects.get(admin=request.user, pk=pk)
     userscores = UserScore.objects.filter(course=course)
-    print userscores
-    return render(request,'useraccount/course_detail.html',locals())
-    
-
+    if request.GET.get('download', False):
+        title = [u'姓名', u'英文名', u'学号', '期中考试成绩', u'期末考试成绩',
+                 u'平时成绩', u'实验成绩', u'补考成绩', u'总分', u'绩点']
+        excel = []
+        name = '{}.xsl'.format(course.name)
+        teams = set(userscores.values_list('user__team__gradeId'))
+        for team in teams:
+            data = [title, ]
+            for userscore in userscores.filter(user__team__gradeId=team[0]):
+                user = userscore.user
+                data.append([user.name, user.username, user.stuId, userscore.midterm or 0,
+                             userscore.final_exam or 0, userscore.usual or 0,userscore.experimental or 0, 
+                             userscore.retest or 0, userscore.total_score, userscore.points])
+            excel.append({'name':str(team[0]),'data':data})
+        response = HttpResponse(generate_xls_multisheet(excel), content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(
+            name.encode('utf8'))
+        return response
+    return render(request, 'useraccount/course_detail.html', locals())

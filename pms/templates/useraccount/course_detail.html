@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block table %}
+<p><button id='btn_download' style="margin-left:300px;" type="button" class="btn btn-lg btn-primary">下载</button></p>
 <div class="row">
         <div style="margin-left:300px;" class="table-responsive">
             <table style="width: 100%;margin:auto" class="table table-striped">
@@ -27,7 +28,7 @@
                         <th>期中考试成绩</th>
                         <th>期末考试成绩</th>
                         <th>平时成绩</th>
-                        <th>实验成绩比例</th>
+                        <th>实验成绩</th>
                         <th>补考成绩</th>
                         <th>总分</th>
                         <th>绩点</th>
@@ -54,9 +55,12 @@
 
 {% block js_extras %}
 <script>
-$('#courses').addClass('active')
+$("#btn_download").click(function(){
+    window.location=('/useraccount/course_detail/{{ course.id }}/?download=True');
+    });
+$('#courses').addClass('active');
 $('li').click(function(){
-    $(this).addClass('active').siblings().removeClass('active')
+    $(this).addClass('active').siblings().removeClass('active');
     })
 </script>
 {% endblock %}
