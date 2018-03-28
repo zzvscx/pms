@@ -16,7 +16,11 @@
 {% endblock %}
 
 {% block table %}
-<p><button id='btn_download' style="margin-left:300px;" type="button" class="btn btn-lg btn-primary">下载</button></p>
+<div class="form-group" style="margin-left:300px;" >
+    <button id='btn_download' type="button" class="btn btn-lg btn-primary">下载成绩</button>
+    <input type="file" id="file" />
+    <input class= 'btn btn-lg btn-primary' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
+</div>
 <div class="row">
         <div style="margin-left:300px;" class="table-responsive">
             <table style="width: 100%;margin:auto" class="table table-striped">
@@ -54,7 +58,23 @@
 {% endblock %}
 
 {% block js_extras %}
+<style type="text/css">
+    #file{ display:none;}
+</style>
 <script>
+function GetFile() {
+    $("#file").click();
+    var formData = new FormData();
+    formData.append('file',$('#file').get(0).files[0]);
+    $.ajax({
+        url: '/useraccount/course_detail/{{ pk }}/',
+        type: 'POST',
+        cache: false,
+        data:  formData,
+        processData: false,
+        contentType: false,
+    }).done(function(res){}).fail(function(res){});
+}
 $("#btn_download").click(function(){
     window.location=('/useraccount/course_detail/{{ course.id }}/?download=True');
     });

@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q, Sum, Avg, Count
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from .models import User, UserScore
 from course.models import Course
@@ -104,13 +105,16 @@ def courses(request):
         admin__in=[request.user, ]).order_by('created_at')
     return render(request, 'useraccount/courses.html', locals())
 
-
+@csrf_exempt
 @login_required
 def course_detail(request, pk):
     if not request.user.is_staff:
         raise Http404
     course = Course.objects.get(admin=request.user, pk=pk)
     userscores = UserScore.objects.filter(course=course)
+    if request.method == 'POST':
+        f = request.FILES.get('file')
+        
     if request.GET.get('download', False):
         title = [u'姓名', u'英文名', u'学号', '期中考试成绩', u'期末考试成绩',
                  u'平时成绩', u'实验成绩', u'补考成绩', u'总分', u'绩点']
