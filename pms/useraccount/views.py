@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import xlrd
 import urllib
 from datetime import datetime, timedelta
 from django.shortcuts import render
@@ -105,6 +106,7 @@ def courses(request):
         admin__in=[request.user, ]).order_by('created_at')
     return render(request, 'useraccount/courses.html', locals())
 
+
 @csrf_exempt
 @login_required
 def course_detail(request, pk):
@@ -114,7 +116,29 @@ def course_detail(request, pk):
     userscores = UserScore.objects.filter(course=course)
     if request.method == 'POST':
         f = request.FILES.get('file')
-        
+        wb = xlrd.open_workbook(
+            filename=None, file_contents=f.read()
+        )
+        table = wb.sheets()[0]
+        row = table.nrows
+        error = []
+        #['学号'，'期中成绩'， '期末成绩','平时成绩'，'实验成绩'，'补考成绩']
+        for i in xrange(row):
+            col = table.row_values(i)
+            stuId = col[0]
+            midterm = col[1] or 0
+            final_exam = col[2] or 0
+            usual = col[3] or 0
+            experimental = col[4] or 0
+            retest = col[5] or 0
+            user = User.objects.get(stuId=col[0])
+            userscore = UserScore.objects.filter(course=course, user=user)
+            if userscore:
+                userscore.update(midterm=midterm, final_exam=final_exam,
+                                    usual=usual, experimental=experimental, retest=retest)
+            else:
+                UserScore.objects.create(course=course, user=user, midterm=midterm, final_exam=final_exam,
+                                            usual=usual, experimental=experimental, retest=retest)
     if request.GET.get('download', False):
         title = [u'姓名', u'英文名', u'学号', '期中考试成绩', u'期末考试成绩',
                  u'平时成绩', u'实验成绩', u'补考成绩', u'总分', u'绩点']
@@ -126,10 +150,11 @@ def course_detail(request, pk):
             for userscore in userscores.filter(user__team__gradeId=team[0]):
                 user = userscore.user
                 data.append([user.name, user.username, user.stuId, userscore.midterm or 0,
-                             userscore.final_exam or 0, userscore.usual or 0,userscore.experimental or 0, 
+                             userscore.final_exam or 0, userscore.usual or 0, userscore.experimental or 0,
                              userscore.retest or 0, userscore.total_score, userscore.points])
-            excel.append({'name':str(team[0]),'data':data})
-        response = HttpResponse(generate_xls_multisheet(excel), content_type='application/vnd.ms-excel')
+            excel.append({'name': str(team[0]), 'data': data})
+        response = HttpResponse(generate_xls_multisheet(
+            excel), content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(
             name.encode('utf8'))
         return response
