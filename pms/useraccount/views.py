@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from .models import User, UserScore
-from course.models import Course
+from course.models import Course, ClassSchedule, SchoolTerm
 from lib.excel import generate_xls_multisheet
 # Create your views here.
 
@@ -162,4 +162,13 @@ def course_detail(request, pk):
 
 @login_required
 def user_lesson(request):
+    user = request.user
+    school_term = request.GET.get('school_term')
+    if school_term:
+        school_term = SchoolTerm.objects.get(name=school_term)
+    else:
+        school_term = SchoolTerm.now_schoolterm()
+        
+    class_schedule = ClassSchedule.objects.filter(course__admin__in=[user,], course__school_term=school_term)    
+
     return render(request, 'useraccount/lesson.html', locals())

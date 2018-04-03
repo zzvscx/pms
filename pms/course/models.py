@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import datetime, timedelta
 from django.db import models
 
 # Create your models here.
@@ -62,6 +63,16 @@ class SchoolTerm(models.Model):
         return self.name
 
     @classmethod
+    def now_schoolterm(cls):
+        now = datetime.now()
+        if now.month < 9:
+            name = '{}-{} {}'.format(now.year-1, now.year, '2')
+        else:
+            name = '{}-{} {}'.format(now.year, now.year+1, '1')
+        return cls.objects.get(name=name)
+
+
+    @classmethod
     def add_schoolterm(cls):
         date_from = 2000
         for i in range(100):
@@ -114,6 +125,14 @@ class ClassSchedule(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.schedule,self.classroom)
+
+    @classmethod
+    def sort(cls, class_schedule):
+        res = {''}
+        for cs in class_schedule:
+            pass
+
+
 
 
 class Course(models.Model):
