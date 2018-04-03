@@ -70,6 +70,51 @@ class SchoolTerm(models.Model):
             cls.objects.get_or_create(name=name+' 1')
             cls.objects.get_or_create(name=name+' 2')
 
+WEEK_DAYS=(
+    (u'周一', u'周一'),
+    (u'周二', u'周二'),
+    (u'周三', u'周三'),
+    (u'周四', u'周四'),
+    (u'周五', u'周五'),
+    (u'周六', u'周六'),
+    (u'周日', u'周日'),
+)
+
+LESSON_CHOICE=(
+    ('1-2','1-2'),
+    ('3-4', '3-4'),
+    ('5-6', '5-6'),
+    ('7-8', '7-8'),
+    (u'晚自习', u'晚自习'),
+    )
+
+class Schedule(models.Model):
+    week_day = models.CharField(max_length=2,choices=WEEK_DAYS)
+    lesson = models.CharField(max_length=3,choices=LESSON_CHOICE)
+    
+    def __unicode__(self):
+        return '{} {}'.format(self.week_day, self.lesson)
+
+    def __str__(self):
+        return '{} {}'.format(self.week_day, self.lesson)
+    
+    @classmethod
+    def add_schedule(cls):
+        for i in WEEK_DAYS:
+            for j in LESSON_CHOICE:
+                cls.objects.create(week_day=i[0],lesson=j[0])
+
+class ClassSchedule(models.Model):
+    course = models.ForeignKey("Course")
+    schedule = models.ForeignKey(Schedule)
+    classroom = models.CharField(max_length=32, null=True, blank=True)
+
+    def __unicode__(self):
+        return '{} {}'.format(self.schedule,self.classroom)
+
+    def __str__(self):
+        return '{} {}'.format(self.schedule,self.classroom)
+
 
 class Course(models.Model):
     name = models.CharField(max_length=64, verbose_name=u'课程名')
@@ -91,6 +136,12 @@ class Course(models.Model):
     desc = models.TextField(null=True, blank=True, verbose_name=u'备注')
     created_at = models.DateTimeField(verbose_name=u"创建时间", auto_now_add=True)
 
+    @property
+    def all_admin():
+        res = ''
+        for a in admin.all():
+            res += a.name
+        return res
 
     def __unicode__(self):
         return self.name

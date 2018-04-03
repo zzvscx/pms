@@ -159,3 +159,7 @@ def course_detail(request, pk):
             name.encode('utf8'))
         return response
     return render(request, 'useraccount/course_detail.html', locals())
+
+@login_required
+def user_lesson(request):
+    return render(request, 'useraccount/lesson.html', locals())

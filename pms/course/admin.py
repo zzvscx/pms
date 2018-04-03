@@ -30,7 +30,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'numbering', 'category')
     search_fields = ('name', 'code', 'numbering')
     list_filter = ('category',)
-    raw_id_fields = ('admin',)
+    filter_horizontal = ('admin', )
 
 
 @admin.register(Category)
@@ -42,3 +42,14 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(SchoolTerm)
 class SchoolTermAdmin(admin.ModelAdmin):
     list_display = ('name',)
+
+@admin.register(Schedule)
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ('week_day', 'lesson')
+
+@admin.register(ClassSchedule)
+class ClassScheduleAdmin(admin.ModelAdmin):
+    list_display = ('course','schedule','classroom')
+    search_fields = ('course','classroom','schedule')
+    row_id_fields = ('course',)
+

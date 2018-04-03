@@ -1,0 +1,139 @@
+{% extends 'useraccount/base.html'%}
+{% load static %}
+
+{% block title %}
+    <title>教务管理</title>
+{% endblock %}
+
+{% block head_extras %}
+<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
+<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block sidebar %}
+<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
+<li id='user_lesson'><a href="user_lesson">我的课表</a></li>
+{% endblock %}
+
+{% block table %}
+<div class="row">
+    <div style="margin-left:300px;" class="table-responsive">
+        <table style="width: 100%;margin:auto" class="table table-striped">
+        	<tr class="morning">
+    		    <tr class="days">
+	        		<thead>
+	      		    	<td> </td>
+		            	<td>星期一</td>
+		            	<td>星期二</td>
+		            	<td>星期三</td>
+		            	<td>星期四</td>
+		            	<td>星期五</td>
+		            	<td>星期六</td>
+		            	<td>星期天</td>
+		        	</thead>
+	        	</tr>
+		        <tr class="m1">
+		            <td id="morning" rowspan="4"> 上午 </td>
+		            <td>&nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="m2">
+		            <td>&nbsp; </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="m3">
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="m4">
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+	    	</tr>
+		    <tr class="noon">
+		        <tr>
+		            <td id="noon" colspan="8">午休</td>
+		        </tr>
+		    </tr>
+		    <tr class="afternoon">
+		        <tr class="a1">
+		            <td id="afternoon" rowspan="4">下午</td>
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="a2">
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="a3">
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="a4">
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		        <tr class="a4">
+		        	<td id="afternoon">晚自习</td>
+		            <td> &nbsp;</td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		            <td> </td>
+		        </tr>
+		    </tr>
+		        	</tbody>
+        </table>
+{% endblock %}
+
+
+{% block js_extras %}
+<script>
+$('#user_lesson').addClass('active')
+$('li').click(function(){
+    $(this).addClass('active').siblings().removeClass('active')
+    })
+</script>
+{% endblock %}

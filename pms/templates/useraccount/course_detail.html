@@ -12,7 +12,7 @@
 
 {% block sidebar %}
 <li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
-<li id='my_course'><a href="#">我的课表</a></li>
+<li id='my_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
 {% endblock %}
 
 {% block table %}

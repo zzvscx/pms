@@ -61,10 +61,10 @@ class User(AbstractUser):
     desc = models.TextField(null=True, blank=True, verbose_name=u'备注')
 
     def __unicode__(self):
-        return self.name
+        return self.username
 
     def __str__(self):
-        return self.name
+        return self.username
 
     @property
     def leave_school_date(self):

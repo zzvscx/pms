@@ -6,6 +6,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
 
+from useraccount.models import User,UserScore
+from course.models import Academy, Department, Grade, Category,\
+                    SchoolTerm,Schedule,Course
+
 
 def sendmail(title, content, to, files=None, from_email='default', cc=None, ):
     if isinstance(to, list):
@@ -47,3 +51,17 @@ def sendmail(title, content, to, files=None, from_email='default', cc=None, ):
     res = smtp.sendmail(from_email or getattr(settings, 'DEFAULT_FROM_EMAIL'), to_addr + cc, msg.as_string())
     smtp.quit()
     return res
+
+def add():
+    academy = Academy.objects.create(name=u'信息学院')
+    department = Department.objects.create(name=u'电子信息工程', academy=academy)
+    grade = Grade.objects.create(name=u'电子信息工程二班', gradeId='2014240302', department=department)
+    User.objects.create(username='zhangsongwei', password='zxcasdqwe'name=u'张松伟', sex=u'男', stuId='201424030220',term=grade,intake='2014-09-01',leave='2018-09-01',term='2014')
+    teacher = User.objects.create(username='teacher',password='zxcasdqwe')
+    category = Category.objects.create(name=u'公共基础课')
+    SchoolTerm.add_schoolterm()
+    Schedule.add_schedule()
+    Course.objects.create(name=u'高数上', code=1, numbering=1,category=category,admin=[teacher,],
+        schoolterm=SchoolTerm.objects.get(name=''))
+
+    
