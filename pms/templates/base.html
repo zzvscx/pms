@@ -51,7 +51,7 @@
                   {% else %}
                     <li><a href="{% url 'user_detail' %}">个人信息</a></li>
                   {% endif %}
-                    <li><a href="#">修改密码</a></li>
+                    <li><a href="{% url 'change_password' %}">修改密码</a></li>
                     <li><a href="{% url 'logout' %}">退出登录</a></li>
                 {% else %}
                   <li><a href="{% url 'login' %}">登录</a></li>

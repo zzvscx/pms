@@ -48,6 +48,24 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/')
 
+@login_required
+def change_password(request):
+    user = request.user
+    if request.method == 'GET':
+        return render(request, 'useraccount/change_pw.html')
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        re_password = request.POST.get('re_password')
+        print new_password, re_password
+        print old_password, user.password
+        if not auth.authenticate(username=user.username, password=old_password):
+            err_msg = u'原密码输入错误' 
+        elif new_password != re_password:
+            err_msg = u'两次新密码输入不一致'
+        else:
+            return HttpResponse('密码修改成功！')
+        return render(request, 'useraccount/change_pw.html',locals())
 
 @login_required
 def user_detail(request):
