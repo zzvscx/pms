@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block sidebar %}
-{% if not user.staff %}
+{% if not user.is_staff %}
 	<li id='user_detail'><a href="{% url 'user_detail' %}">个人信息 </a></li>
     <li id='user_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
     <li id='achievement'><a href="{% url 'user_points' %}">我的成绩</a></li>

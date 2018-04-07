@@ -164,13 +164,23 @@ def course_detail(request, pk):
         name = '{}.xsl'.format(course.name)
         teams = set(userscores.values_list('user__team__gradeId'))
         for team in teams:
-            data = [title, ]
+            all_data = [title, ]
+            retest = [title, ]
+            good = [title, ]
             for userscore in userscores.filter(user__team__gradeId=team[0]):
                 user = userscore.user
-                data.append([user.name, user.username, user.stuId, userscore.midterm or 0,
+                data = [user.name, user.username, user.stuId, userscore.midterm or 0,
                              userscore.final_exam or 0, userscore.usual or 0, userscore.experimental or 0,
-                             userscore.retest or 0, userscore.total_score, userscore.points])
-            excel.append({'name': str(team[0]), 'data': data})
+                             userscore.retest or 0, userscore.total_score, userscore.points]
+                if userscore.total_score:
+                    if userscore.total_score >= 85:
+                        good.append(data)
+                    elif userscore.total_score < 60:
+                        retest.append(data)
+                all_data.append(data)
+            excel.append({'name': str(team[0]), 'data': all_data})
+            excel.append({'name': '{}{}'.format(team[0], u'优秀学生'), 'data': good})
+            excel.append({'name': '{}{}'.format(team[0], u'补考学生'), 'data': retest})
         response = HttpResponse(generate_xls_multisheet(
             excel), content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(
@@ -192,3 +202,12 @@ def user_lesson(request):
     class_schedule = ClassSchedule.objects.filter(Q(course__admin__in=[user,])|Q(course__in=courses), course__school_term=school_term)
     schedule_dict = ClassSchedule.sort(class_schedule)
     return render(request, 'useraccount/lesson.html', locals())
+
+@login_required
+def course_analyze(request):
+    user = request.user
+    if not user.is_staff:
+        raise Http404
+
+
+
