@@ -164,11 +164,11 @@ def course_detail(request, pk):
 def user_lesson(request):
     user = request.user
     school_term = request.GET.get('school_term')
+    school_terms = SchoolTerm.objects.all()
     if school_term:
         school_term = SchoolTerm.objects.get(name=school_term)
     else:
         school_term = SchoolTerm.now_schoolterm()
-        
-    class_schedule = ClassSchedule.objects.filter(course__admin__in=[user,], course__school_term=school_term)    
-
+    class_schedule = ClassSchedule.objects.filter(course__admin__in=[user,], course__school_term=school_term)
+    schedule_dict = ClassSchedule.sort(class_schedule)
     return render(request, 'useraccount/lesson.html', locals())

@@ -119,18 +119,18 @@ class ClassSchedule(models.Model):
     course = models.ForeignKey("Course")
     schedule = models.ForeignKey(Schedule)
     classroom = models.CharField(max_length=32, null=True, blank=True)
-
     def __unicode__(self):
-        return '{} {}'.format(self.schedule,self.classroom)
+        return '{}'.format(self.course.name)
 
     def __str__(self):
-        return '{} {}'.format(self.schedule,self.classroom)
+        return '{}'.format(self.course.name)
 
     @classmethod
     def sort(cls, class_schedule):
-        res = {''}
+        res = {}
         for cs in class_schedule:
-            pass
+            res[cs.schedule.__str__()] = cs
+        return res
 
 
 
