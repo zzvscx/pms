@@ -169,6 +169,8 @@ def user_lesson(request):
         school_term = SchoolTerm.objects.get(name=school_term)
     else:
         school_term = SchoolTerm.now_schoolterm()
-    class_schedule = ClassSchedule.objects.filter(course__admin__in=[user,], course__school_term=school_term)
+    userscore = UserScore.objects.filter(course__school_term=school_term, user=user)
+    courses = [us.course for us in userscore]
+    class_schedule = ClassSchedule.objects.filter(Q(course__admin__in=[user,])|Q(course__in=courses), course__school_term=school_term)
     schedule_dict = ClassSchedule.sort(class_schedule)
     return render(request, 'useraccount/lesson.html', locals())

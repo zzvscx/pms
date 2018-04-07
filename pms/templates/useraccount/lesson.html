@@ -12,8 +12,14 @@
 {% endblock %}
 
 {% block sidebar %}
-<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
-<li id='user_lesson'><a href="user_lesson">我的课表</a></li>
+{% if not user.staff %}
+	<li id='user_detail'><a href="{% url 'user_detail' %}">个人信息 </a></li>
+    <li id='user_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
+    <li id='achievement'><a href="{% url 'user_points' %}">我的成绩</a></li>
+{% else %}
+	<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
+	<li id='user_lesson'><a href="user_lesson">我的课表</a></li>
+{% endif %}
 {% endblock %}
 
 {% block table %}
