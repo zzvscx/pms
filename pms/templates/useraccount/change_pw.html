@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block head_extras %}
+<link href= "{% static 'useraccount/css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{% if err_msg %}
+<div class="alert alert-info">
+    <a class="close" data-dismiss="alert">×</a>
+    <strong>ERROR:</strong>{{ err_msg }}
+</div>
+{% endif %}
+<div class="container">
+    <form class="form-signin" action="{%  url 'change_password' %}" method="post">
+      {% csrf_token %}
+      <h2 class="form-signin-heading">修改密码</h2>
+      <label for="inputPassword" class="sr-only">原密码</label>
+      <input name='old_password' type="password" id="inputText" class="form-control" placeholder="原密码" required autofocus>
+      <label for="inputPassword" class="sr-only">新密码</label>
+      <input name='new_password' type="password" id="inputPassword" class="form-control" placeholder="新密码" required>
+      <label for="inputPassword" class="sr-only">确认密码</label>
+      <input name='re_password' type="password" id="inputPassword" class="form-control" placeholder="确认密码" required>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">确认</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'useraccount/base.html'%}
 {% load static %}
+{% load get %}
 
 {% block title %}
     <title>教务管理</title>
@@ -8,6 +9,12 @@
 {% block head_extras %}
 <link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
 <link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+<script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="https://img.hcharts.cn/highcharts/modules/data.js"></script>
+<script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script>
+<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+
 {% endblock %}
 
 {% block sidebar %}
@@ -16,7 +23,10 @@
 {% endblock %}
 
 {% block table %}
-<div class="form-group" style="margin-left:300px;" >
+
+<div id="container" style="margin-left:320px; min-width: 250px; height: 300px;"></div>
+
+<div class="form-group" style="margin-left:320px;" >
     <button id='btn_download' type="button" class="btn btn-lg btn-primary">下载成绩</button>
     <input type="file" id="file" />
     <input class= 'btn btn-lg btn-primary' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
@@ -81,6 +91,133 @@ $("#btn_download").click(function(){
 $('#courses').addClass('active');
 $('li').click(function(){
     $(this).addClass('active').siblings().removeClass('active');
-    })
+    });
+
+$(function () {
+    // Create the chart
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '成绩分布'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: '人数'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },
+        series: [{
+            name: '分布范围',
+            colorByPoint: true,
+            data: [{
+                name: '不及格',
+                y:  {% getnum userscores 'total_score' 0 59 %},
+                drilldown: '0-59'
+            }, {
+                name: '良好',
+                y: {% getnum userscores 'total_score' 60 89 %},
+                drilldown: '60-89'
+            }, {
+                name: '优秀',
+                y: {% getnum userscores 'total_score' 90 100 %},
+                drilldown: '90-100'
+            }, ]
+        }],
+        drilldown: {
+            series: [{
+                name: '0-59',
+                id: '0-59',
+                data: [
+                    [
+                        '0-9',
+                        {% getnum userscores 'total_score' 0 9 %}
+                    ],
+                    [
+                        '10-19',
+                        {% getnum userscores 'total_score' 10 19 %}
+                    ],
+                    [
+                        '20-29',
+                        {% getnum userscores 'total_score' 20 29 %}
+                    ],
+                    [
+                        '30-39',
+                        {% getnum userscores 'total_score' 30 39 %}
+                    ],
+                    [
+                        '40-49',
+                        {% getnum userscores 'total_score' 40 49 %}
+                    ],
+                    [
+                        '50-59',
+                        {% getnum userscores 'total_score' 50 59 %}
+                    ]
+                ]
+            }, {
+                name: '60-89',
+                id: '60-89',
+                data: [
+                    [
+                        '60-69',
+                        {% getnum userscores 'total_score' 60 69 %}
+                    ],
+                    [
+                        '70-79',
+                        {% getnum userscores 'total_score' 70 79 %}
+                    ],
+                    [
+                        '80-89',
+                        {% getnum userscores 'total_score' 80 89 %}
+                    ],
+                ]
+            }, {
+                name: '90-100',
+                id: '90-100',
+                data: [
+                    [
+                        '90-93',
+                        {% getnum userscores 'total_score' 90 93 %}
+                    ],
+                    [
+                        '94-96',
+                        {% getnum userscores 'total_score' 94 96 %}
+                    ],
+                    [
+                        '96-99',
+                        {% getnum userscores 'total_score' 96 99 %}
+                    ],
+                    [
+                        '100',
+                        {% getnum userscores 'total_score' 100 100 %}
+                    ],
+                ]
+            }, ]
+        }
+    });
+});
+
 </script>
 {% endblock %}
