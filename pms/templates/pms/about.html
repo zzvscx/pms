@@ -1,1 +1,44 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+<title>关于</title>
+{% endblock %}
+
+{% block content %}
+
+{% if msg %}
+    <div class="alert alert-info">
+        <a class="close" data-dismiss="alert">×</a>
+        <strong>提示:</strong>{{ msg }}
+    </div>
+{% endif %}
+<div class="container">
+
+      <div class="starter-template">
+        <h1>学生成绩管理系统</h1>
+        <p class="lead">欢迎使用学生成立管理系统v1.0，如有需要反馈的信息，请在下方填写.</p>
+      </div>
+      <hr>
+      <form method="post">
+              {% csrf_token %}
+            <fieldset class="form-group">
+            <label for="exampleSelect1">反馈类型</label>
+                <select name='message_type' class="form-control" id="exampleSelect1">
+                      <option>成绩错误</option>
+                    <option>网站错误</option>
+                      <option>功能建议</option>
+                      <option>其他</option>
+                </select>
+              </fieldset>
+              <fieldset class="form-group">
+                <label for="exampleTextarea">反馈内容</label>
+                <textarea name='message' class="form-control" id="exampleTextarea" rows="3"></textarea>
+              </fieldset>
+              <button type="submit" class="btn btn-primary">提交</button>
+        </form>
+
+</div>
+{% endblock %}
+{% block js_extras %}
+{% endblock %}

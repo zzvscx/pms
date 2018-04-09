@@ -127,3 +127,7 @@ def update_data(*args,**kwargs):
         instance.points = instance.total_score / course.total_score * course.credit
         
 
+class UserMessage(models.Model):
+    user = models.ForeignKey(User)
+    message_type = models.CharField(max_length=16,verbose_name=u'反馈类型')
+    message = models.CharField(max_length=256, verbose_name=u'反馈内容')

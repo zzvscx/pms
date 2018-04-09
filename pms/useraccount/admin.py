@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
-from .models import User, UserScore
+from .models import User, UserScore, UserMessage
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 
@@ -43,3 +43,9 @@ class UserScoreAdmin(admin.ModelAdmin):
     list_display = ('user','course','midterm','final_exam','usual','experimental','retest','total_points')
     search_fields = ('user','course')
     raw_id_fields = ('user','course')
+
+@admin.register(UserMessage)
+class UserMessageAdmin(admin.ModelAdmin):
+    list_display = ('user','message_type','message')
+    list_filter = ('message_type',)
+    search_fields = ('user',)
