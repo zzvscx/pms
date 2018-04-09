@@ -91,7 +91,7 @@ def user_points(request):
     all_score = userscores.aggregate(
         sum_points=Sum('points'), avg_points=Avg('points'))
     all_score = [userscores.count(), all_score['sum_points'],
-                 all_score['avg_points']]
+                 '%.3f'%all_score['avg_points']]
     if request.GET.get('download', False):
         data = [[u'学年学期', u'门数', u'总学分', u'平均绩点'], ]
         data.extend(term_score)
