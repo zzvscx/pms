@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^$',lambda x: redirect(reverse('index'))),
     url(r'^admin/', admin.site.urls),
     url(r'^useraccount/',include('useraccount.urls')),
-    url(r'^index/$', views.index, name='index'),
+    url(r'post/', include('post.urls')),
+    url(r'^index/$', views.IndexView.as_view(), name='index'),
     url(r'^about/$', views.about, name='about'),
 ]

@@ -1,10 +1,15 @@
 #-*- coding:utf-8 -*-
 from django.shortcuts import render
-from django.http import HttpResponse
-from useraccount.models import UserMessage
+from useraccount.models import UserMessage, UserScore
+from django.views.generic import ListView
+from post.models import Post
 
-def index(request):
-    return render(request,'pms/index.html')
+
+class IndexView(ListView):
+    model = Post
+    template_name = 'pms/index.html'
+    context_object_name= 'post_list'
+    paginate_by = 5
 
 def about(request):
     if request.method == 'POST':
