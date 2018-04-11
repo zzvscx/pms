@@ -36,7 +36,6 @@ class Post(models.Model):
     author = models.ForeignKey(User, verbose_name=u'作者')
     created_time = models.DateTimeField(verbose_name=u'创建时间', auto_now_add=True)
     modified_time = models.DateTimeField(verbose_name=u'最后修改时间', auto_now=True)
-    img = models.ImageField(verbose_name=u'配图',upload_to='static/img/',null=True, blank=True,help_text='1400*300')
 
     def __str__(self):
         return self.title
