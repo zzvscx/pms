@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'useraccount',
     'course',
     'lib',
-    'post'
+    'post',
+    'weixin'
 ]
 
 MIDDLEWARE = [
