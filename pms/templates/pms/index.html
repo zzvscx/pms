@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'post/css/index.css' %}">
 <style type="text/css">
     div.jumbotron{
+        margin-top: 20px;
         background-color:#A9A9A9;
     }
     .panel-info > .panel-heading{
@@ -152,6 +153,8 @@
                         <ul class="nav nav-pills" role="tablist">
                         {% for tag in tag_list %}
                             <li role="presentation"><a href="{% url 'tags' tag.pk %}">{{ tag.name }}</a></li>
+                        {% empty %}
+                        <a class="list-group-item">暂无标签</a>
                         {% endfor %}
                         </ul>
                     </div>
