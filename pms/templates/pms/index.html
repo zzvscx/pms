@@ -105,7 +105,7 @@
                             {% for post in recent_post_list %}
                                 <a href="{{ post.get_absolute_url }}" class="list-group-item">{{ post.title }}</a>
                             {% empty %}
-                            暂无通告！
+                            <a class="list-group-item">暂无通告！</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                             {% for date in date_list %}
                                 <a href="{% url 'archives' date.year date.month %}" class="list-group-item">{{ date.year }} 年 {{ date.month }} 月</a>
                             {% empty %}
-                            暂无归档
+                            <a class="list-group-item">暂无归档</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                             {% for category in category_list %}
                                 <a href="{% url 'category' category.pk %}" class="list-group-item">{{ category.name }}<span class="badge">{{ category.num_posts }}</span></a>
                             {% empty %}
-                            暂无分类
+                            <a class="list-group-item">暂无分类</a>
                             {% endfor %}
                         </div>
                     </div>
