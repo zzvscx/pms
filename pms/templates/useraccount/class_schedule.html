@@ -1,0 +1,165 @@
+{% extends 'useraccount/base.html'%}
+{% load static %}
+{% load get %}
+
+{% block title %}
+    <title>教务管理</title>
+{% endblock %}
+
+{% block head_extras %}
+<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
+<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+<style type="text/css">
+    form{
+        margin-left:1000px;
+    }
+    .row{
+        margin-left:150px;
+        margin-right:15px;
+    }
+    .table{
+        width: 100%;
+        margin:auto;
+    }
+    .table>tbody>tr>td#noon{
+        background-color: #4DDCCB;
+    }
+
+
+</style>
+{% endblock %}
+
+{% block table %}
+<form action="{% url 'class_schedule' %}" method='get'>
+    <label for="name">选择学期</label>
+    <select name='school_term' >
+      {% for term in school_terms %}
+      <option {% if term == school_term %} selected="true"{% endif %} value="{{ term }}">{{ term }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="提交">
+</form>
+<hr>
+<div class="row">
+    <div class="table">
+        <table border=1 class="table">
+            <tr class="morning">
+                <tr class="days">
+                    <thead>
+                          <td><div class='out'> <b></b><em><em></div></td>
+                          <td> </td>
+                        <td>星期一</td>
+                        <td>星期二</td>
+                        <td>星期三</td>
+                        <td>星期四</td>
+                        <td>星期五</td>
+                        <td>星期六</td>
+                        <td>星期天</td>
+                    </thead>
+                </tr>
+                <tr class="m1">
+                    <td id="morning" rowspan="4"> 上午 <br/>8:30-10:05,10:25-12:00<br/></td>
+                    <td rowspan="2">1-2</td>
+                    <td>{% get  schedule_dict '周一 1-2' %}</td>
+                    <td>{% get  schedule_dict '周二 1-2' %} </td>
+                    <td>{% get  schedule_dict '周三 1-2' %} </td>
+                    <td>{% get  schedule_dict '周四 1-2' %} </td>
+                    <td> {% get  schedule_dict '周五 1-2' %}</td>
+                    <td> {% get  schedule_dict '周六 1-2' %}</td>
+                    <td> {% get  schedule_dict '周日 1-2' %}</td>
+                </tr>
+                <tr class="m2">
+                    <td>{% get  schedule_dict '周一 1-2' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周二 1-2' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周三 1-2' 'classroom' %} </td>
+                    <td> {% get  schedule_dict '周四 1-2' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周五 1-2' 'classroom' %} </td>
+                    <td> {% get  schedule_dict '周六 1-2' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周日 1-2' 'classroom' %} </td>
+                </tr>
+                <tr class="m3">
+                    <td rowspan="2">3-4</td>
+                    <td>{% get  schedule_dict '周一 3-4' %}</td>
+                    <td>{% get  schedule_dict '周二 3-4' %} </td>
+                    <td>{% get  schedule_dict '周三 3-4' %} </td>
+                    <td>{% get  schedule_dict '周四 3-4' %} </td>
+                    <td>{% get  schedule_dict '周五 3-4' %}</td>
+                    <td>{% get  schedule_dict '周六 3-4' %}</td>
+                    <td>{% get  schedule_dict '周日 3-4' %}</td>
+                </tr>
+                <tr class="m4">
+                    <td>{% get  schedule_dict '周一 3-4' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周二 3-4' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周三 3-4' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周四 3-4' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周五 3-4' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周六 3-4' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周日 3-4' 'classroom' %} </td>
+                </tr>
+            </tr>
+            <tr class="noon">
+                <tr>
+                    <td id="noon" colspan="9">午休</td>
+                </tr>
+            </tr>
+            <tr class="afternoon">
+                <tr class="a1">
+                    <td id="afternoon" rowspan="4">下午 <br/>夏(2:30-4:05,4:25-6:00)<br/>冬(2:00-3:35,3:55-5:30)</td>
+                    <td rowspan="2">5-6</td>
+                    <td>{% get  schedule_dict '周一 5-6' %}</td>
+                    <td>{% get  schedule_dict '周二 5-6' %} </td>
+                    <td>{% get  schedule_dict '周三 5-6' %} </td>
+                    <td>{% get  schedule_dict '周四 5-6' %} </td>
+                    <td>{% get  schedule_dict '周五 5-6' %}</td>
+                    <td>{% get  schedule_dict '周六 5-6' %}</td>
+                    <td>{% get  schedule_dict '周日 5-6' %}</td>
+                </tr>
+                <tr class="a2">
+                    <td> &nbsp;</td>
+                    <td>{% get  schedule_dict '周一 5-6' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周二 5-6' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周三 5-6' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周四 5-6' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周五 5-6' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周六 5-6' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周日 5-6' 'classroom' %} </td>
+                </tr>
+                <tr class="a3">
+                    <td rowspan="2">7-8</td>
+                    <td>{% get  schedule_dict '周一 7-8' %}</td>
+                    <td>{% get  schedule_dict '周二 7-8' %} </td>
+                    <td>{% get  schedule_dict '周三 7-8' %} </td>
+                    <td>{% get  schedule_dict '周四 7-8' %} </td>
+                    <td>{% get  schedule_dict '周五 7-8' %}</td>
+                    <td>{% get  schedule_dict '周六 7-8' %}</td>
+                    <td>{% get  schedule_dict '周日 7-8' %}</td>
+                </tr>
+                <tr class="a4">
+                    <td>{% get  schedule_dict '周一 7-8' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周二 7-8' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周三 7-8' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周四 7-8' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周五 7-8' 'classroom' %} </td>
+                    <td>{% get  schedule_dict '周六 7-8' 'classroom' %}</td>
+                    <td>{% get  schedule_dict '周日 7-8' 'classroom' %} </td>
+                </tr>
+                <tr class="a4">
+                    <td id="afternoon">晚自习<br/>(7:00-)</td>
+                    <td> &nbsp;</td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> <td>
+                </tr>
+            </tr>
+            </tbody>
+        </table>
+{% endblock %}
+{% block js_extras %}
+    <script type="text/javascript">
+        $('#class_schedule').addClass('active');
+    </script>
+{% endblock %}
