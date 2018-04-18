@@ -46,10 +46,11 @@
 		
 			var obj = $("#"+id);
 			obj.css("fontSize", _options[id].fontSize);
-			obj.css("fontFamily", _options[id].fontFamily)
+			obj.css("fontFamily", _options[id].fontFamily);
+			obj.css("color", _options[id].fontColor);
 			obj.css("background", _options[id].background);
 			obj.css("fontWeight", _options[id].fontWeight);
-			obj.css("opacity",1)
+		
 			//change reading
 			obj.html(templateStr)
 			
@@ -75,6 +76,14 @@
 	
 	//default values
 	jQuery.fn.MyDigitClock.defaults = {
+		fontSize: '50px',
+		fontFamily: 'Microsoft JhengHei, Century gothic, Arial',
+		fontColor: '#ff2200',
+		fontWeight: 'bold',
+		background: '#fff',
+		timeFormat: '{HH}<span id="ch1">:</span>{MM}<span id="ch2">:</span>{SS}',
+		bShowHeartBeat: false,
+		bAmPm:false
 	};
 
 })(jQuery);
