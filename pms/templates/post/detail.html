@@ -1,34 +1,65 @@
 {% extends 'pms/index.html' %}
 
+{% block head_extras %}
+    <style type="text/css">
+        h1.entry-title{
+            position: relative;
+            left: 300px;
+        }
+        .post-category, .post-date,.post-author{
+            position: relative;
+            left:260px;
+            font-size: 17px;
+        }
+        .entry-content{
+            font-size: 20px;
+        }
+        .toc{
+            font-size:20px;
+        }
+        .panel-info > .panel-heading{
+        background-image:linear-gradient(to bottom, #428bca 0%, #428bca 100%);
+        }
+        .panel-title{
+        color:#eeeeee;
+        }
+    </style>
+{% endblock %}
+
+{% block showcase %}
+{% endblock %}
 {% block main %}
  <article class="post post-{{ post.pk }}">
         <header class="entry-header">
             <h1 class="entry-title">{{ post.title }}</h1>
             <div class="entry-meta">
-                <span class="post-category"><a href="#">{{ post.category.name }}</a></span>
-                <span class="post-date"><a href="#"><time class="entry-date"
-                                                          datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
-                <span class="post-author"><a href="#">{{ post.author }}</a></span>
-                <span class="comments-link"><a href="#">{{ post.comment_number }} 评论</a></span>
-                <span class="views-count"><a href="#">{{ post.views }} 阅读</a></span>
+                <span class="post-category">{{ post.category.name }} |</span>
+                <span class="post-date"><time class="entry-date"
+                                                          datetime="{{ post.created_time }}">{{ post.created_time }} |</time></span>
+                <span class="post-author">{{ post.author }}</span>
             </div>
         </header>
         <div class="entry-content clearfix">
             {{ post.body|safe }}
+            <br/>
             <div class="widget-tag-cloud">
                 <ul>
-                    标签:
-                    {% for tag in post.tags.all %}
-                        <li><a href="{% url 'tags' tag.pk %}">{{ tag.name }}</a></li>
-                    {% endfor %}
+                        <ol>
+                            标签:
+                            {% for tag in post.tags.all %}
+                            <a href="{% url 'tags' tag.pk %}">{{ tag.name }}</a>
+                            {% endfor %}
+                        </ol>
                 </ul>
             </div>
         </div>
     </article>
 {% endblock %}
+
 {% block toc %}
     <div class="widget widget-content">
         <h3 class="widget-title">文章目录</h3>
-        {{ post.toc|safe }}
+        <a class="toc">{{ post.toc|safe }}</a>
     </div>
+    <br>
 {% endblock toc %}

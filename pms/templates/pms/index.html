@@ -13,21 +13,43 @@
         background-color:#A9A9A9;
     }
     .panel-info > .panel-heading{
-        background-image:linear-gradient(to bottom, #A9A9A9 0%, #A9A9A9 100%);
+        background-image:linear-gradient(to bottom, #428bca 0%, #428bca 100%);
+    }
+    .post-title{
+        position: relative;
+        left: 70px;
+    }
+    .post-title > h2{
+        color:#000000;
+    }
+    .entry-meta{
+        position: relative;
+        font-size: 17px;
+        left:240px;
+    }
+    .entry-content{
+        font-size: 20px;
+    }
+    .entry-content >div.read-more{
+        margin-left: 325px;
+    }
+    .panel-title{
+        color:#eeeeee;
     }
 
 </style>
 {% endblock %}
 
-
 {% block content %}
 <div class="content-body">
+    {% block showcase %}
     <div class="container theme-showcase" role="main">
-    <div class="jumbotron">
-        <h1>欢迎访问长安大学成绩管理系统!</h1>
-        <p>您可以在这里查看最新的学校公告，也可以管理自己的成绩和课表，希望您能喜欢.</p>
+        <div class="jumbotron">
+            <h1>欢迎访问长安大学成绩管理系统!</h1>
+            <p>您可以在这里查看最新的学校公告，也可以管理自己的成绩和课表，希望您能喜欢.</p>
+        </div>
     </div>
-    </div>
+    {% endblock %}
     <div class="container">
         <div class="row">
             <main class="col-md-8">
@@ -36,16 +58,17 @@
                     <article class="post post-{{ post.pk }}">
                         <header class="entry-headder">
                             <h1 class="entry-meta">
-                                <a href="{{ post.get_absolute_url }}"><div class="page-header"><h2>{{ post.title }}</h2></div></a>
+                                <a href="{{ post.get_absolute_url }}"><div class="post-title"><h2>{{ post.title }}</h2></div></a>
                             </h1>
                             <div class="entry-meta">
-                                <span class="post-category">{{ post.category.name }}</span>
-                                <span class="post_date"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></span>
+                                <span class="post-category">{{ post.category.name }} | </span>
+                                <span class="post_date"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }} | </time></span>
                                 <span class="post_author">{{ post.author }}</span>
                             </div>
                         </header>
                         <div class="entry-content clearfix">
                             <p>{{ post.excerpt }}...</p>
+                            <br/>
                             <div class="read-more cl-effect-14">
                                 <a href="{{ post.get_absolute_url }}" class="more-link">继续阅读<span class="meta-nav">→</span></a>
                             </div>

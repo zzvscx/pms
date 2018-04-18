@@ -10,7 +10,7 @@
 {% if msg %}
     <div class="alert alert-info">
         <a class="close" data-dismiss="alert">×</a>
-        <strong>提示:</strong>{{ msg }}
+        <strong>提示: </strong>{{ msg }}
     </div>
 {% endif %}
 <div class="container">
@@ -41,4 +41,7 @@
 </div>
 {% endblock %}
 {% block js_extras %}
+<script type="text/javascript">
+    $('#about').addClass('active');
+</script>
 {% endblock %}

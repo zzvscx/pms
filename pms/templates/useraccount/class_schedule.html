@@ -1,4 +1,4 @@
-{% extends 'useraccount/base.html'%}
+{% extends 'base.html'%}
 {% load static %}
 {% load get %}
 
@@ -7,15 +7,12 @@
 {% endblock %}
 
 {% block head_extras %}
-<link href=" {% static 'css/base.css' %}" rel="stylesheet">
-<link href=" {% static 'css/user_detail.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 <style type="text/css">
-    form{
-        margin-left:1000px;
-    }
     .row{
-        margin-left:150px;
-        margin-right:15px;
+        margin-left: 20px;
+        margin-right: 20px;
     }
     .table{
         width: 100%;
@@ -24,20 +21,27 @@
     .table>tbody>tr>td#noon{
         background-color: #4DDCCB;
     }
+    form{
+        margin-top: 20px;
+        margin-left:800px;
+    }
+    label{
+        font-size: 20px;
+    }
 
 
 </style>
 {% endblock %}
 
-{% block table %}
+{% block content %}
 <form action="{% url 'class_schedule' %}" method='get'>
-    <label for="name">选择学期</label>
-    <select name='school_term' >
-      {% for term in school_terms %}
-      <option {% if term == school_term %} selected="true"{% endif %} value="{{ term }}">{{ term }}</option>
-      {% endfor %}
+    <label >选择学期:  </label>
+    <select class="selectpicker" data-live-search="true">
+        {% for term in school_terms %}
+            <option {% if term == school_term %} selected="true"{% endif %} data-tokens="{{ term }}" value="{{ term }}"><a>{{ term }}</a></option>
+        {% endfor %}
     </select>
-    <input type="submit" value="提交">
+    <input id="submit" type="submit" value="提交">
 </form>
 <hr>
 <div class="row">
