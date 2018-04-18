@@ -18,7 +18,6 @@
     <link href="{% static 'pms/css/base.css' %}" rel="stylesheet">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="http://api.map.baidu.com/components?ak=yourak&v=1.0">
     {% block head_extras %}
 
     {% endblock %}
@@ -59,7 +58,6 @@
                 {% else %}
                   <li><a href="{% url 'login' %}">登录</a></li>
                 {% endif %}
-                <lbs-weather city='北京' ></lbs-weather>
               </ul>
             </li>
           </ul>
