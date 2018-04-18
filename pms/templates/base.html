@@ -80,8 +80,10 @@
                 <li id='about'><a href="{% url 'about' %}">反馈</a></li>
             </ul>
         </div>
+        <div  style='margin-left:250px;margin-right: 20px'id="pms_content">
         {% block content %}
         {% endblock %}
+        </div>
       </div>
     </div>
     <script src="{% static 'pms/js/jquery.MyDigitclock.js'%}"></script>
