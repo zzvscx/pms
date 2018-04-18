@@ -189,7 +189,7 @@ def course_detail(request, pk):
     return render(request, 'useraccount/course_detail.html', locals())
 
 @login_required
-def user_lesson(request):
+def class_schedule(request):
     user = request.user
     school_term = request.GET.get('school_term')
     school_terms = SchoolTerm.objects.all()
@@ -201,13 +201,8 @@ def user_lesson(request):
     courses = [us.course for us in userscore]
     class_schedule = ClassSchedule.objects.filter(Q(course__admin__in=[user,])|Q(course__in=courses), course__school_term=school_term)
     schedule_dict = ClassSchedule.sort(class_schedule)
-    return render(request, 'useraccount/lesson.html', locals())
+    return render(request, 'useraccount/class_schedule.html', locals())
 
-@login_required
-def course_analyze(request):
-    user = request.user
-    if not user.is_staff:
-        raise Http404
 
 
 

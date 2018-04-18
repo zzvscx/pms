@@ -11,11 +11,14 @@
     {%block title%}
     {%endblock %}
     <!-- Bootstrap core CSS -->
-    <link href=" {% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
     <!-- Bootstrap theme -->
-    <link href=" {% static 'bootstrap/css/bootstrap-theme.min.css' %}" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{% static 'pms/css/base.css' %}" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://api.map.baidu.com/components?ak=yourak&v=1.0">
     {% block head_extras %}
 
     {% endblock %}
@@ -56,6 +59,7 @@
                 {% else %}
                   <li><a href="{% url 'login' %}">登录</a></li>
                 {% endif %}
+                <lbs-weather city='北京' ></lbs-weather>
               </ul>
             </li>
           </ul>
@@ -65,8 +69,7 @@
     {% block content %}
 
     {% endblock %}
-    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    
     {% block js_extras %}
     {% endblock %}
   </body>

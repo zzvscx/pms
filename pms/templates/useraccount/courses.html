@@ -8,61 +8,62 @@
 {% block head_extras %}
 <link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
 <link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
-{% endblock %}
-
-{% block sidebar %}
-<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
-<li id='my_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
+<style type="text/css">
+    .row{
+        margin-left:150px;
+        margin-right:30px;
+    }
+    .table{
+        width: 100%;
+        margin:auto;
+    }
+</style>
 {% endblock %}
 
 {% block table %}
 <div class="row">
-        <div style="margin-left:300px;" class="table-responsive">
-            <table style="width: 100%;margin:auto" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>课程名</th>
-                        <th>课程代码</th>
-                        <th>课程序号</th>
-                        <th>课程类别</th>
-                        <th>学年学期</th>
-                        <th>总分</th>
-                        <th>学分</th>
-                        <th>期中考试比例</th>
-                        <th>期末考试比例</th>
-                        <th>平时成绩比例</th>
-                        <th>实验成绩比例</th>
-                        <th>备注</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for course in courses %}
-                    <tr>
-                        <th>
-                        <th><a href='/useraccount/course_detail/{{course.id}}/'>{{ course.name }}</a></th>
-                        <th>{{ course.code }}</th>
-                        <th>{{ course.numbering }}</th>
-                        <th>{{ course.category }}</th>
-                        <th>{{ course.school_term }}</th>
-                        <th>{{ course.total_score }}</th>
-                        <th>{{ course.credit }}</th>
-                        <th>{{ course.midterm }}</th>
-                        <th>{{ course.final_exam }}</th>
-                        <th>{{ course.usual }}</th>
-                        <th>{{ course.experimental }}</th>
-                        <th>{{ course.desc }}</th>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>课程名</th>
+                    <th>课程代码</th>
+                    <th>课程序号</th>
+                    <th>课程类别</th>
+                    <th>学年学期</th>
+                    <th>总分</th>
+                    <th>学分</th>
+                    <th>期中考试比例</th>
+                    <th>期末考试比例</th>
+                    <th>平时成绩比例</th>
+                    <th>实验成绩比例</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <th><a href='/useraccount/course_detail/{{course.id}}/'>{{ course.name }}</a></th>
+                    <th>{{ course.code }}</th>
+                    <th>{{ course.numbering }}</th>
+                    <th>{{ course.category }}</th>
+                    <th>{{ course.school_term }}</th>
+                    <th>{{ course.total_score }}</th>
+                    <th>{{ course.credit }}</th>
+                    <th>{{ course.midterm }}</th>
+                    <th>{{ course.final_exam }}</th>
+                    <th>{{ course.usual }}</th>
+                    <th>{{ course.experimental }}</th>
+                    <th>{{ course.desc }}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
-
 {% block js_extras %}
-<script>
-$('#courses').addClass('active')
-$('li').click(function(){
-    $(this).addClass('active').siblings().removeClass('active')
-    })
-</script>
+    <script type="text/javascript">
+        $('#courses').addClass('active');
+    </script>
 {% endblock %}
