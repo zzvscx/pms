@@ -8,22 +8,29 @@
 
 {% block head_extras %}
 <link rel="stylesheet" type="text/css" href="{% static 'post/css/index.css' %}">
-<!-- <link rel="stylesheet" href="{% static 'post/css/pace.css' %}"> -->
-<link rel="stylesheet" href="{% static 'post/css/custom.css' %}">
-<link rel="stylesheet" href="{% static 'post/css/highlights/github.css' %}">
+<style type="text/css">
+    div.content-body{
+        margin-left: 220px;
+    }
+    div.jumbotron{
+        background-color:#A9A9A9;
+    }
+    .panel-info > .panel-heading{
+        background-image:linear-gradient(to bottom, #A9A9A9 0%, #A9A9A9 100%);
+    }
+
+</style>
 {% endblock %}
 
 
 {% block content %}
-{% block carousel %}
-<div class="container theme-showcase" role="main">
+<div class="content-body">
+    <div class="container theme-showcase" role="main">
     <div class="jumbotron">
         <h1>欢迎访问长安大学成绩管理系统!</h1>
         <p>您可以在这里查看最新的学校公告，也可以管理自己的成绩和课表，希望您能喜欢.</p>
     </div>
-</div>
-{% endblock %}
-<div class="content-body">
+    </div>
     <div class="container">
         <div class="row">
             <main class="col-md-8">
@@ -124,7 +131,7 @@
                         {% get_tags as tag_list %}
                         <ul class="nav nav-pills" role="tablist">
                         {% for tag in tag_list %}
-                            <li role="presentation"><a href="{% url 'tags' tag.pk %}">{{ tag.name }}</li>
+                            <li role="presentation"><a href="{% url 'tags' tag.pk %}">{{ tag.name }}</a></li>
                         {% endfor %}
                         </ul>
                     </div>
@@ -136,6 +143,7 @@
 {% endblock %}
 
 {% block js_extras %}
-    <script src="{% static 'post/js/pace.min.js' %}"></script>
-    <script src="{% static 'post/js/modernizr.custom.js' %}"></script>
+<script type="text/javascript">
+    $('#index').addClass('active');
+</script>
 {% endblock %}

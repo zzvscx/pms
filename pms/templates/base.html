@@ -16,8 +16,19 @@
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{% static 'pms/css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'useraccount/css/base.css' %}" rel="stylesheet">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+
+      #tp-weather-widget,.clock{
+        margin-top: 10px;
+      }
+      .navbar-inverse{
+        background-image:linear-gradient(to bottom, #2f2f2f 0%, #2f2f2f 100%);
+        opacity:0.9;
+      }
+    </style>
     {% block head_extras %}
 
     {% endblock %}
@@ -30,45 +41,99 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{%  url 'index' %}">长安大学学生成绩管理系统</a>
+          <a class="navbar-brand title" href="{%  url 'index' %}">长安大学学生成绩管理系统 | </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{%  url 'index' %}">首页</a></li>
-            <li><a href="{%  url 'about' %}">关于</a></li>
+            <li><div id="tp-weather-widget"></div></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% if request.user.is_authenticated %} {{ request.user.username }}{%else%}请登录 {% endif %} <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 {% if request.user.is_authenticated %}
-                  {% if request.user.is_staff %}
-                    <li><a href="{% url 'courses' %}">课程管理</a></li>
-                  {% else %}
-                    <li><a href="{% url 'user_detail' %}">个人信息</a></li>
-                  {% endif %}
                     <li><a href="{% url 'change_password' %}">修改密码</a></li>
                     <li><a href="{% url 'logout' %}">退出登录</a></li>
                 {% else %}
                   <li><a href="{% url 'login' %}">登录</a></li>
                 {% endif %}
               </ul>
+              <li><a id="clock"></a><li>
             </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    {% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li id='index'><a href="{% url 'index' %}">首页</a></li>
+                {% if not request.user.is_staff %}
+                    <li id='user_detail'> <a href="{% url 'user_detail' %}">个人信息 </a></li>
+                    <li id='user_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
+                    <li id='achievement'><a href="{% url 'user_points' %}">我的成绩</a></li>
+                {% else %}
+                    <li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
+                    <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
+                {% endif %}
+                <li id='about'><a href="{% url 'about' %}">反馈</a></li>
+            </ul>
+        </div>
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+    <script src="{% static 'pms/js/jquery.MyDigitclock.js'%}"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(function(){
+          $("#clock").MyDigitClock({
+            fontSize:15, 
+            fontFamily:"PingFang SC,Microsoft YaHei UI,STHeitiSC-Light,Microsoft YaHei", 
+            fontColor: "#9d9d9d", 
+            fontWeight:"normal", 
+            bAmPm:true,
+            background:"#2f2f2f",
+            bShowHeartBeat:true
+          });
+        });
+      });
+    </script>
+    <script>
+      (function(T,h,i,n,k,P,a,g,e){
+        g=function(){
+          P=h.createElement(i);
+          a=h.getElementsByTagName(i)[0];
+          P.src=k;
+          P.charset="utf-8";
+          P.async=1;
+          a.parentNode.insertBefore(P,a)};
+          T["ThinkPageWeatherWidgetObject"]=n;
+          T[n]||(T[n]=function(){(T[n].q=T[n].q||[]).push(arguments)});
+          T[n].l=+new Date();
+          if(T.attachEvent){
+            T.attachEvent("onload",g)
+          }else{
+            T.addEventListener("load",g,false)
+          }
+        }(window,document,"script","tpwidget","//widget.seniverse.com/widget/chameleon.js"));
 
-    {% endblock %}
-    
+      tpwidget("init", {
+        "flavor": "slim",
+        "location": "WX4FBXXFKE4F",
+        "geolocation": "enabled",
+        "language": "zh-chs",
+        "unit": "c",
+        "theme": "chameleon",
+        "container": "tp-weather-widget",
+        "bubble": "enabled",
+        "alarmType": "badge",
+        "uid": "UDFB6CB245",
+        "hash": "2a17339f668311c3a62db57c7a7ea3fa"
+      });
+      tpwidget("show");</script>
     {% block js_extras %}
     {% endblock %}
   </body>
-  </html>
+</html>
