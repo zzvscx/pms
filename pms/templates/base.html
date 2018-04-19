@@ -22,7 +22,7 @@
     <style type="text/css">
 
       #tp-weather-widget,.clock{
-        margin-top: 10px;
+        margin-top: 10%;
       }
       .navbar-inverse{
         background-image:linear-gradient(to bottom, #2f2f2f 0%, #2f2f2f 100%);
@@ -58,8 +58,8 @@
                   <li><a href="{% url 'login' %}">登录</a></li>
                 {% endif %}
               </ul>
-              <li><a id="clock"></a><li>
             </li>
+            <li><a id="clock"></a><li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -71,22 +71,22 @@
                 <li id='index'><a href="{% url 'index' %}">首页</a></li>
                 {% if not request.user.is_staff %}
                     <li id='user_detail'> <a href="{% url 'user_detail' %}">个人信息 </a></li>
-                    <li id='user_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
+                    <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
                     <li id='achievement'><a href="{% url 'user_points' %}">我的成绩</a></li>
-                {% else %}
+                {% elif request.user %}
                     <li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
                     <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
                 {% endif %}
                 <li id='about'><a href="{% url 'about' %}">反馈</a></li>
             </ul>
         </div>
-        <div  style='margin-left:250px;margin-right: 20px'id="pms_content">
+        <div style='margin-left: 17%; margin-right: 1%'id="pms_content">
         {% block content %}
         {% endblock %}
         </div>
       </div>
     </div>
-    <script src="{% static 'pms/js/jquery.MyDigitclock.js'%}"></script>
+    <script src="{% static 'pms/js/jquery.MyDigitClock.js'%}"></script>
     <script type="text/javascript">
       $(document).ready(function(){
         $(function(){

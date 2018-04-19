@@ -96,7 +96,7 @@ LESSON_CHOICE=(
     ('3-4', '3-4'),
     ('5-6', '5-6'),
     ('7-8', '7-8'),
-    (u'晚自习', u'晚自习'),
+    (u'night', u'night'),
     )
 
 class Schedule(models.Model):
