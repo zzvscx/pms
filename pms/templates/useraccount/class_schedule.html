@@ -224,9 +224,18 @@
             case hour < 18: var now_class= '.7-8'; break;
             case hour < 21: var now_class='.night'; break;
             default : var now_class = ''
-        }
-        $(week).css({'background-color':"#fbac91"})
-        $(now_class+' '+'td').css({'background-color':"#f1e1b6",'color':'#555555'})
-        $(now_class+' '+week).css({'background-color':"#7fdfd4"})
+        };
+        $(week).css({'background-color':"#fbac91"});
+        $(now_class+' '+'td').css({'background-color':"#f1e1b6",'color':'#555555'});
+        $(now_class+' '+week).css({'background-color':"#7fdfd4"});
+        if (now_class == '.1-2' || now_class == '.3-4'){
+            $('#morning').css({'background-color':"#f1e1b6",'color':'#555555'})
+        };
+        if(now_class == '.5-6' || now_class == '.7-8'){
+            $('#afternoon').css({'background-color':"#f1e1b6",'color':'#555555'})
+        };
+        if(now_class == '.night'){
+            $('#night').css({'background-color':"#f1e1b6",'color':'#555555'})
+        };
     </script>
 {% endblock %}

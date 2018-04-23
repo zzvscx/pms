@@ -12,6 +12,22 @@
         margin-left: 0.5%;
         margin-right: 0.5%;
     }
+    td ,th{
+        vertical-align: middle;
+        text-align: center;
+    }
+    thead{
+        background-color: #7fdfd4;
+        color:#eeeeee;
+        font-size: 15px;
+    }
+    .table td{
+        color:#777777;
+        font-size:15px;
+        height: 60px;
+        width: 1000px;
+        background-color:#fafaf6;
+    }
 </style>
 {% endblock %}
 
@@ -49,7 +65,10 @@
                     <td>{{ course.usual }}</td>
                     <td>{{ course.experimental }}</td>
                 </tr>
-                <tr class='desc' hidden><td colspan="10">备注： {{ course.desc }}<td></tr>
+                <tr class='desc' hidden>
+                    <td>备注：<td>
+                    <td colspan="8">{{ course.desc }}<td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

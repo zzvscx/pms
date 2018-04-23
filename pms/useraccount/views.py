@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.backends import ModelBackend
-from django.db.models import Q, Sum, Avg, Count
+from django.db.models import Q, Sum, Avg, Count, Case, When
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
@@ -130,9 +130,26 @@ def courses(request):
 def course_detail(request, pk):
     if not request.user.is_staff:
         raise Http404
-    course = Course.objects.get(admin=request.user, pk=pk)
-    userscores = UserScore.objects.filter(course=course)
-    if request.method == 'POST':
+    if request.method == 'GET':
+        chart_type = request.GET.get('chart_type','table')
+        course = Course.objects.get(admin=request.user, pk=pk)
+        userscores = UserScore.objects.filter(course=course)
+        chart = userscores.aggregate(
+            good=Count(Case(When(total_score__gte=85, then=1))),
+            good_first=Count(Case(When(total_score__gte=85, total_score__lt=90, then=1))),
+            good_second=Count(Case(When(total_score__gte=90, total_score__lt=95, then=1))),
+            good_third=Count(Case(When(total_score__gte=95, total_score__lt=100, then=1))),
+            perfect=Count(Case(When(total_score=100, then=1))),
+            normal=Count(Case(When(total_score__gte=60, total_score__lt=85, then=1))),
+            normal_first=Count(Case(When(total_score__gte=60, total_score__lt=70, then=1))),
+            normal_second=Count(Case(When(total_score__gte=70, total_score__lt=80, then=1))),
+            normal_third=Count(Case(When(total_score__gte=80, total_score__lt=85, then=1))),
+            failed=Count(Case(When(total_score__lt=60, then=1))),
+            failed_first=Count(Case(When(total_score__gte=0, total_score__lt=20, then=1))),
+            failed_second=Count(Case(When(total_score__gte=20, total_score__lt=40, then=1))),
+            failed_third=Count(Case(When(total_score__gte=40, total_score__lt=60, then=1))),
+            )
+    elif request.method == 'POST':
         f = request.FILES.get('file')
         wb = xlrd.open_workbook(
             filename=None, file_contents=f.read()
@@ -202,6 +219,7 @@ def class_schedule(request):
     class_schedule = ClassSchedule.objects.filter(Q(course__admin__in=[user,])|Q(course__in=courses), course__school_term=school_term)
     schedule_dict = ClassSchedule.sort(class_schedule)
     return render(request, 'useraccount/class_schedule.html', locals())
+
 
 
 

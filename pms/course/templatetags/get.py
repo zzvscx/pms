@@ -10,11 +10,6 @@ def get(dict, key, attr=None):
 	else:
 		return ''
 
-@register.simple_tag
-def getnum(cla, attr, l, r):
-	if attr == 'total_score':
-		return cla.filter(total_score__gte=l,total_score__lte=r).count()
-
 
 
 

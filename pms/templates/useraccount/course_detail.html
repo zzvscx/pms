@@ -1,4 +1,4 @@
-{% extends 'useraccount/base.html'%}
+{% extends 'base.html'%}
 {% load static %}
 {% load get %}
 
@@ -7,67 +7,119 @@
 {% endblock %}
 
 {% block head_extras %}
-<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
-<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<style type="text/css">
+    text.highcharts-credits{
+        display: none;
+    }
+    .chart_container{
+        width:400px;
+    }
+    td ,th{
+        vertical-align: middle;
+        text-align: center;
+    }
+    thead{
+        background-color: #7fdfd4;
+        color:#eeeeee;
+        font-size: 14px;
+    }
+    .table td{
+        color:#777777;
+        font-size:15px;
+        height: 53px;
+        width: 1000px;
+        background-color:#fafaf6;
+    }
+    div.btn-group{
+        margin-left: 78%;
+
+    }
+    .row{
+        padding-left: 2%;
+        padding-right: 1%;
+    }
+    .chart_container{
+        float:left;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="btn-group" >
+    <button id='btn_download' type="button" class="btn btn-large btn-info">下载成绩</button>
+    <input type="file" id="file" />
+    <input class= 'btn btn-large btn-info ' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
+    <div class="btn-group">
+        <button class="btn btn-large btn-info disabled">{{ chart_type }}</button>
+        <button class="btn btn-large btn-info  dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="/useraccount/course_detail/{{ pk }}/"><i class="i"></i> 表格</a></li>
+            <li><a href="/useraccount/course_detail/{{ pk }}/?chart_type=pie"><i class="i"></i> 饼形图</a></li>
+            <li><a href="/useraccount/course_detail/{{ pk }}/?chart_type=bar"><i class="i"></i> 条形图</a></li>
+        </ul>
+    </div>
+</div>
+<hr/>
+{%  ifequal chart_type 'pie' %}
+    <div id='good' class="chart_container"></div>
+    <div id='normal' class="chart_container"></div>
+    <div id='failed' class="chart_container"></div>
+{% endifequal %}
+{% ifequal chart_type 'table' %}
+    <div class="row">
+            <div  class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>姓名</th>
+                            <th>英文名</th>
+                            <th>学号</th>
+                            <th>期中考试成绩</th>
+                            <th>期末考试成绩</th>
+                            <th>平时成绩</th>
+                            <th>实验成绩</th>
+                            <th>补考成绩</th>
+                            <th>总分</th>
+                            <th>绩点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for score in userscores %}
+                        <tr>
+                            <td>{{ score.user.name }}</td>
+                            <td>{{ score.user.username }}</td>
+                            <td>{{ score.user.stuId }}</td>
+                            <td>{% if score.midterm %}{{ score.midterm }}{% endif %}</td>
+                            <td>{% if score.final_exam %}{{ score.final_exam }}{% endif %}</td>
+                            <td>{% if score.usual %}{{ score.usual }}{%endif%}</td>
+                            <td>{% if score.experimental %}{{ score.experimental }}{% endif %}</td>                        
+                            <td>{% if score.retest %}{{ score.retest }}{% endif %}</td>
+                            <td>{% if score.total_points %}{{ score.total_score }}{% endif %}</td>
+                            <td>{% if score.points %}{{ score.points }}{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+{% endifequal %}
+{% ifequal chart_type 'bar' %}
+<div id='bar'></div>
+{% endifequal %}
+{% endblock %}
+
+{% block js_extras %}
 <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
 <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
 <script src="https://img.hcharts.cn/highcharts/modules/data.js"></script>
 <script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script>
 <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 
-{% endblock %}
-
-{% block sidebar %}
-<li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
-<li id='my_lesson'><a href="{% url 'user_lesson' %}">我的课表</a></li>
-{% endblock %}
-
-{% block table %}
-
-<div id="container" style="margin-left:320px; min-width: 250px; height: 300px;"></div>
-
-<div class="form-group" style="margin-left:320px;" >
-    <button id='btn_download' type="button" class="btn btn-lg btn-primary">下载成绩</button>
-    <input type="file" id="file" />
-    <input class= 'btn btn-lg btn-primary' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
-</div>
-<div class="row">
-        <div style="margin-left:300px;" class="table-responsive">
-            <table style="width: 100%;margin:auto" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>姓名</th>
-                        <th>英文名</th>
-                        <th>学号</th>
-                        <th>期中考试成绩</th>
-                        <th>期末考试成绩</th>
-                        <th>平时成绩</th>
-                        <th>实验成绩</th>
-                        <th>补考成绩</th>
-                        <th>总分</th>
-                        <th>绩点</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for score in userscores %}
-                    <tr>
-                        <th>{{ score.user.name }}</th>
-                        <th>{{ score.user.username }}</th>
-                        <th>{{ score.user.stuId }}</th>
-                        <td>{% if score.midterm %}{{ score.midterm }}{% endif %}</td>
-                        <td>{% if score.final_exam %}{{ score.final_exam }}{% endif %}</td>
-                        <td>{% if score.usual %}{{ score.usual }}{%endif%}</td>
-                        <td>{% if score.experimental %}{{ score.experimental }}{% endif %}</td>                        
-                        <td>{% if score.retest %}{{ score.retest }}{% endif %}</td>
-                        <td>{% if score.total_points %}{{ score.total_score }}{% endif %}</td>
-                        <td>{% if score.points %}{{ score.points }}{% endif %}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-{% endblock %}
-
-{% block js_extras %}
 <style type="text/css">
     #file{ display:none;}
 </style>
@@ -85,17 +137,133 @@ function GetFile() {
         contentType: false,
     }).done(function(res){}).fail(function(res){});
 }
+
 $("#btn_download").click(function(){
     window.location=('/useraccount/course_detail/{{ course.id }}/?download=True');
     });
+
 $('#courses').addClass('active');
-$('li').click(function(){
-    $(this).addClass('active').siblings().removeClass('active');
+
+$(function () {
+    $('#good').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: '优秀 ({{ chart.good }} 人)'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '人数占比',
+            data: [
+                ['85-89',   {% widthratio chart.good_first chart.good 100%}],
+                ['90-94',   {% widthratio chart.good_second chart.good 100%}],
+                ['95-99',   {% widthratio chart.good_third chart.good 100%}],
+                ['100',     {% widthratio chart.perfect chart.good 100%}],
+
+            ]
+        }]
     });
+});
+$(function () {
+    $('#normal').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: '良好 ({{ chart.normal }} 人)'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '人数占比',
+            data: [
+                ['60-69',   {% widthratio chart.normal_first chart.normal 100%}],
+                ['70-79',   {% widthratio chart.normal_second chart.normal 100%}],
+                ['80-84',   {% widthratio chart.normal_third chart.normal 100%}],
+            ]
+        }]
+    });
+});
+$(function () {
+    $('#failed').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: '不及格 ({{ chart.failed }} 人)'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '人数占比',
+            data: [
+                ['0-19',   {% widthratio chart.failed_first chart.failed 100%}],
+                ['20-39',   {% widthratio chart.failed_second chart.failed 100%}],
+                ['40-59',   {% widthratio chart.failed_third chart.failed 100%}],
+            ]
+        }]
+    });
+});
 
 $(function () {
     // Create the chart
-    Highcharts.chart('container', {
+    Highcharts.chart('bar', {
         chart: {
             type: 'column'
         },
@@ -134,16 +302,16 @@ $(function () {
             colorByPoint: true,
             data: [{
                 name: '不及格',
-                y:  {% getnum userscores 'total_score' 0 59 %},
+                y:  {{ chart.failed }},
                 drilldown: '0-59'
             }, {
                 name: '良好',
-                y: {% getnum userscores 'total_score' 60 89 %},
-                drilldown: '60-89'
+                y: {{ chart.normal }},
+                drilldown: '60-84'
             }, {
                 name: '优秀',
-                y: {% getnum userscores 'total_score' 90 100 %},
-                drilldown: '90-100'
+                y:  {{ chart.good }},
+                drilldown: '85-100'
             }, ]
         }],
         drilldown: {
@@ -152,72 +320,66 @@ $(function () {
                 id: '0-59',
                 data: [
                     [
-                        '0-9',
-                        {% getnum userscores 'total_score' 0 9 %}
+                        '0-19',
+                        {{ chart.failed_first }}
                     ],
                     [
-                        '10-19',
-                        {% getnum userscores 'total_score' 10 19 %}
+                        '20-39',
+                        {{ chart.failed_second }}
                     ],
                     [
-                        '20-29',
-                        {% getnum userscores 'total_score' 20 29 %}
+                        '40-59',
+                        {{chart.failed_third }}
+
                     ],
-                    [
-                        '30-39',
-                        {% getnum userscores 'total_score' 30 39 %}
-                    ],
-                    [
-                        '40-49',
-                        {% getnum userscores 'total_score' 40 49 %}
-                    ],
-                    [
-                        '50-59',
-                        {% getnum userscores 'total_score' 50 59 %}
-                    ]
                 ]
             }, {
-                name: '60-89',
-                id: '60-89',
+                name: '60-84',
+                id: '60-84',
                 data: [
                     [
                         '60-69',
-                        {% getnum userscores 'total_score' 60 69 %}
+                        {{chart.normal_first }}
+
                     ],
                     [
                         '70-79',
-                        {% getnum userscores 'total_score' 70 79 %}
+                        {{chart.normal_second }}
+
                     ],
                     [
-                        '80-89',
-                        {% getnum userscores 'total_score' 80 89 %}
+                        '80-84',
+                        {{chart.normal_third }}
                     ],
                 ]
             }, {
-                name: '90-100',
-                id: '90-100',
+                name: '85-100',
+                id: '85-100',
                 data: [
                     [
-                        '90-93',
-                        {% getnum userscores 'total_score' 90 93 %}
+                        '85-89',
+                        {{chart.good_first }}
+
                     ],
                     [
-                        '94-96',
-                        {% getnum userscores 'total_score' 94 96 %}
+                        '90-94',
+                        {{chart.good_second }}
+
                     ],
                     [
-                        '96-99',
-                        {% getnum userscores 'total_score' 96 99 %}
+                        '95-99',
+                        {{chart.good_third }}
+
                     ],
                     [
                         '100',
-                        {% getnum userscores 'total_score' 100 100 %}
+                        {{chart.perfect }}
+
                     ],
                 ]
             }, ]
         }
     });
 });
-
 </script>
 {% endblock %}
