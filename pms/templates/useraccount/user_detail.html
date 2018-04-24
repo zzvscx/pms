@@ -26,6 +26,9 @@
         width: 1000px;
         background-color:#fafaf6;
     }
+    th{
+        background-color:#fbac90;
+    }
 </style>
 {% endblock %}
 
@@ -97,8 +100,5 @@
 {% block js_extras %}
 <script>
 $('#user_detail').addClass('active')
-$('li').click(function(){
-    $(this).addClass('active').siblings().removeClass('active')
-  })
 </script>
 {% endblock %}
