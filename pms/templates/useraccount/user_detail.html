@@ -1,4 +1,4 @@
-{% extends 'useraccount/base.html'%}
+{% extends 'base.html'%}
 {% load static %}
 
 {% block title %}
@@ -6,68 +6,84 @@
 {% endblock %}
 
 {% block head_extras %}
-<link href=" {% static 'useraccount/css/base.css' %}" rel="stylesheet">
-<link href=" {% static 'useraccount/css/user_detail.css' %}" rel="stylesheet">
+<style type="text/css">
+    .row{
+        margin-left: 1%;
+        margin-right: 1%;
+        margin-top: 1%;
+    }
+    thead{
+        background-color: #7fdfd4;
+        color:#eeeeee;
+        font-size: 15px;
+    }
+    .table td,th{
+        vertical-align: middle;
+        text-align: center;
+        color:#777777;
+        font-size:15px;
+        height: 60px;
+        width: 1000px;
+        background-color:#fafaf6;
+    }
+</style>
 {% endblock %}
 
-{% block table %}
-<div style="margin-left:400px;">
-    <h1>个人信息</h1>
-</div>
+{% block content %}
 <div class="row">
-    <div style="margin-left:300px;" class="table-responsive">
-        <table style="width: 100%;margin:auto" class="table table-striped">
+    <div class="table-responsive">
+        <table class="table table-striped">
         <tbody>
             <tr>
-                <td>姓名：</td>
+                <th>姓名：</th>
                 <td>{{ user.name }}</td>
-                <td>英文名：</td>
+                <th>英文名：</th>
                 <td>{{ user.username }}</td>
             </tr>
             <tr>
-                <td>学号：</td>
+                <th>学号：</th>
                 <td>{{ user.stuId }}</td>
-                <td>性别：</td>
+                <th>性别：</th>
                 <td>{{ user.sex }}</td>
             </tr>
             <tr>
-                <td>学院：</td>
+                <th>学院：</th>
                 <td>{{ user.team.department.academy }}</td>
-                <td>系：</td>
+                <th>系：</th>
                 <td>{{ user.team.department }}</td>
             </tr>
             <tr>
-                <td>班级：</td>
+                <th>班级：</th>
                 <td>{{ user.team.name }}</td>
-                <td>班级编号：</td>
+                <th>班级编号：</th>
                 <td>{{ user.team.gradeId }}</td>
             </tr>
             <tr>
-                <td>入学时间：</td>
+                <th>入学时间：</th>
                 <td>{{ user.intake }}</td>
-                <td>预毕业时间:</td>
+                <th>预毕业时间:</th>
                 <td>{{ user.leave_school_date }}</td>
             </tr>
             <tr>
-                <td>所在年级：</td>
+                <th>所在年级：</th>
                 <td>{{ user.term }}</td>
-                <td>所属校区:</td>
+                <th>所属校区:</th>
                 <td>{{ user.str_campus }}</td>
             </tr>
             <tr>
-                <td>是否有学籍：</td>
+                <th>是否有学籍：</th>
                 <td>{% if user.have_roll %}是{% else %}否{% endif %}</td>
-                <td>是否在籍:</td>
+                <th>是否在籍:</th>
                 <td>{% if user.roll_in_school %}是{% else %}否{% endif %}</td>
             </tr>
             <tr>
-                <td>是否在校：</td>
+                <th>是否在校：</th>
                 <td>{% if user.at_school %}是{% else %}否{% endif %}</td>
-                <td>学习形式:</td>
+                <th>学习形式:</th>
                 <td>{{ user.str_method }}</td>
             </tr>
             <tr>
-                <td>备注:</td>
+                <th>备注:</th>
                 <td colspan=3>{{user.desc}}</td>
             </tr>
             

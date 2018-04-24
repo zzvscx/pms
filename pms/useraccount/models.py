@@ -6,6 +6,7 @@ from django.db import models
 
 # Create your models here.
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Count,Case,When,Q
 from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
 from collections import OrderedDict
@@ -110,6 +111,24 @@ class UserScore(models.Model):
     @property
     def grade_point_average(self):
         return self.total_points / self.course.total_points * self.course.credit
+
+    @classmethod
+    def sort_userscores(cls,userscores):
+        return userscores.aggregate(
+            good=Count(Case(When(total_score__gte=85, then=1))),
+            good_first=Count(Case(When(total_score__gte=85, total_score__lt=90, then=1))),
+            good_second=Count(Case(When(total_score__gte=90, total_score__lt=95, then=1))),
+            good_third=Count(Case(When(total_score__gte=95, total_score__lt=100, then=1))),
+            perfect=Count(Case(When(total_score=100, then=1))),
+            normal=Count(Case(When(total_score__gte=60, total_score__lt=85, then=1))),
+            normal_first=Count(Case(When(total_score__gte=60, total_score__lt=70, then=1))),
+            normal_second=Count(Case(When(total_score__gte=70, total_score__lt=80, then=1))),
+            normal_third=Count(Case(When(total_score__gte=80, total_score__lt=85, then=1))),
+            failed=Count(Case(When(total_score__lt=60, then=1))),
+            failed_first=Count(Case(When(total_score__gte=0, total_score__lt=20, then=1))),
+            failed_second=Count(Case(When(total_score__gte=20, total_score__lt=40, then=1))),
+            failed_third=Count(Case(When(total_score__gte=40, total_score__lt=60, then=1))),
+            )
 
 
 @receiver(pre_save,sender=UserScore)

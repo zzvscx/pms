@@ -37,7 +37,7 @@
 
     }
     .row{
-        padding-left: 2%;
+        padding-left: 1.5%;
         padding-right: 1%;
     }
     .chart_container{
@@ -49,18 +49,34 @@
 
 {% block content %}
 <div class="btn-group" >
-    <button id='btn_download' type="button" class="btn btn-large btn-info">下载成绩</button>
-    <input type="file" id="file" />
-    <input class= 'btn btn-large btn-info ' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
+    {%if request.user.is_staff%}
+        <button id='staff_download' type="button" class="btn btn-large btn-info">下载成绩</button>
+        <input type="file" id="file" />
+        <input class= 'btn btn-large btn-info ' type="button" id="btn" value="上传成绩" onclick="GetFile();" />
+    {% else %}
+        <button id='user_download' type="button" class="btn btn-large btn-info">下载成绩</button>
+    {% endif %}
     <div class="btn-group">
         <button class="btn btn-large btn-info disabled">{{ chart_type }}</button>
         <button class="btn btn-large btn-info  dropdown-toggle" data-toggle="dropdown">
         <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a href="/useraccount/course_detail/{{ pk }}/"><i class="i"></i> 表格</a></li>
-            <li><a href="/useraccount/course_detail/{{ pk }}/?chart_type=pie"><i class="i"></i> 饼形图</a></li>
-            <li><a href="/useraccount/course_detail/{{ pk }}/?chart_type=bar"><i class="i"></i> 条形图</a></li>
+            <li><a  {% if request.user.staff %} 
+                        href="/useraccount/course_detail/{{ pk }}/" 
+                    {% else %}
+                        href="/useraccount/points/" 
+                    {% endif %}><i class="i"></i> 表格</a></li>
+            <li><a {% if request.user.staff %} 
+                        href="/useraccount/course_detail/{{ pk }}/?chart_type=pie" 
+                    {% else %}
+                        href="/useraccount/points/?chart_type=pie" 
+                    {% endif %}><i class="i"></i> 饼形图</a></li>
+            <li><a {% if request.user.staff %} 
+                        href="/useraccount/course_detail/{{ pk }}/?chart_type=bar" 
+                    {% else %}
+                        href="/useraccount/points/?chart_type=bar" 
+                    {% endif %}><i class="i"></i> 条形图</a></li>
         </ul>
     </div>
 </div>
@@ -71,6 +87,87 @@
     <div id='failed' class="chart_container"></div>
 {% endifequal %}
 {% ifequal chart_type 'table' %}
+    {% if not request.user.is_staff %}
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan=4><strong>成绩汇总</strong></th>
+                        </tr>
+                        <tr>
+                            <th>学年学期</th>
+                            <th>门数</th>
+                            <th>总学分</th>
+                            <th>平均绩点</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for score in term_score %}
+                        <tr>
+                            {% for x in score %}
+                            <td>{{x }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td><strong>在校汇总</strong></td>
+                            {% for score in all_score  %}
+                            <td>{{score}}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th colspan=14><strong>成绩列表</strong></th>
+                    </tr>
+                    <tr>
+                        <th>学年学期</th>
+                        <th>课程代码</th>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>课程类别</th>
+                        <th>学分</th>
+                        <th>期中成绩</th>
+                        <th>期末成绩</th>
+                        <th>平时成绩</th>
+                        <th>补考成绩</th>
+                        <th>总评成绩</th>
+                        <th>实验成绩</th>
+                        <th>最终</th>
+                        <th>绩点</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for score in userscores %}
+                    <tr>
+                        <td>{{ score.course.school_term }}</td>
+                        <td>{{ score.course.code }}</td>
+                        <td>{{ score.course.numbering }}</td>
+                        <td>{{ score.course.name }}</td>
+                        <td>{{ score.course.category.name }}</td>
+                        <td>{{ score.course.credit }}</td>
+                        <td>{% if score.midterm %}{{ score.midterm }}{% endif %}</td>
+                        <td>{% if score.final_exam %}{{ score.final_exam }}{% endif %}</td>
+                        <td>{% if score.usual %}{{ score.usual }}{%endif%}</td>
+                        <td>{% if score.retest %}{{ score.retest }}{% endif %}</td>
+                        <td>{% if score.total_score %}{{ score.total_score }}{% endif %}</td>
+                        <td>{% if score.experimental %}{{ score.experimental }}{% endif %}</td>
+                        <td>{% if score.total_score %}{{ score.total_score }}{% endif %}</td>                        
+                        <td>{% if score.points %}{{ score.points }}{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
     <div class="row">
             <div  class="table-responsive">
                 <table class="table table-striped">
@@ -107,6 +204,7 @@
                 </table>
             </div>
     </div>
+    {% endif %}
 {% endifequal %}
 {% ifequal chart_type 'bar' %}
 <div id='bar'></div>
@@ -137,9 +235,11 @@ function GetFile() {
         contentType: false,
     }).done(function(res){}).fail(function(res){});
 }
-
-$("#btn_download").click(function(){
+$("#staff_download").click(function(){
     window.location=('/useraccount/course_detail/{{ course.id }}/?download=True');
+    });
+$("#staff_download").click(function(){
+    window.location=('/useraccount/points/?download=True');
     });
 
 $('#courses').addClass('active');
@@ -155,7 +255,7 @@ $(function () {
             }
         },
         title: {
-            text: '优秀 ({{ chart.good }} 人)'
+            text: '优秀 ({{ chart.good }})'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -173,7 +273,7 @@ $(function () {
         },
         series: [{
             type: 'pie',
-            name: '人数占比',
+            name: '占比',
             data: [
                 ['85-89',   {% widthratio chart.good_first chart.good 100%}],
                 ['90-94',   {% widthratio chart.good_second chart.good 100%}],
@@ -195,7 +295,7 @@ $(function () {
             }
         },
         title: {
-            text: '良好 ({{ chart.normal }} 人)'
+            text: '良好 ({{ chart.normal }})'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -213,7 +313,7 @@ $(function () {
         },
         series: [{
             type: 'pie',
-            name: '人数占比',
+            name: '占比',
             data: [
                 ['60-69',   {% widthratio chart.normal_first chart.normal 100%}],
                 ['70-79',   {% widthratio chart.normal_second chart.normal 100%}],
@@ -233,7 +333,7 @@ $(function () {
             }
         },
         title: {
-            text: '不及格 ({{ chart.failed }} 人)'
+            text: '不及格 ({{ chart.failed }})'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -251,7 +351,7 @@ $(function () {
         },
         series: [{
             type: 'pie',
-            name: '人数占比',
+            name: '占比',
             data: [
                 ['0-19',   {% widthratio chart.failed_first chart.failed 100%}],
                 ['20-39',   {% widthratio chart.failed_second chart.failed 100%}],
@@ -278,7 +378,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: '人数'
+                text: '数量'
             }
         },
         legend: {

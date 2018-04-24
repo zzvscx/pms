@@ -80,9 +80,11 @@ def user_points(request):
 
     if request.method != 'GET':
         raise Http404
+    chart_type = request.GET.get('chart_type','table')
 
     userscores = UserScore.objects.filter(
         user=request.user).order_by('course__school_term')
+    chart = UserScore.sort_userscores(userscores)
     term_score = []
     for scores in userscores.values('course__school_term__name').annotate(
             count=Count('id'), sum_points=Sum('points'), avg_points=Avg('points')):
@@ -92,6 +94,8 @@ def user_points(request):
         sum_points=Sum('points'), avg_points=Avg('points'))
     all_score = [userscores.count(), all_score['sum_points'],
                  '%.3f'%all_score['avg_points']]
+
+
     if request.GET.get('download', False):
         data = [[u'学年学期', u'门数', u'总学分', u'平均绩点'], ]
         data.extend(term_score)
@@ -113,7 +117,7 @@ def user_points(request):
         response['Content-Disposition'] = u'attachment; filename=%s' % urllib.quote(
             name.encode('utf8'))
         return response
-    return render(request, 'useraccount/achievement.html', locals())
+    return render(request, 'useraccount/course_detail.html', locals())
 
 
 @login_required
@@ -134,21 +138,7 @@ def course_detail(request, pk):
         chart_type = request.GET.get('chart_type','table')
         course = Course.objects.get(admin=request.user, pk=pk)
         userscores = UserScore.objects.filter(course=course)
-        chart = userscores.aggregate(
-            good=Count(Case(When(total_score__gte=85, then=1))),
-            good_first=Count(Case(When(total_score__gte=85, total_score__lt=90, then=1))),
-            good_second=Count(Case(When(total_score__gte=90, total_score__lt=95, then=1))),
-            good_third=Count(Case(When(total_score__gte=95, total_score__lt=100, then=1))),
-            perfect=Count(Case(When(total_score=100, then=1))),
-            normal=Count(Case(When(total_score__gte=60, total_score__lt=85, then=1))),
-            normal_first=Count(Case(When(total_score__gte=60, total_score__lt=70, then=1))),
-            normal_second=Count(Case(When(total_score__gte=70, total_score__lt=80, then=1))),
-            normal_third=Count(Case(When(total_score__gte=80, total_score__lt=85, then=1))),
-            failed=Count(Case(When(total_score__lt=60, then=1))),
-            failed_first=Count(Case(When(total_score__gte=0, total_score__lt=20, then=1))),
-            failed_second=Count(Case(When(total_score__gte=20, total_score__lt=40, then=1))),
-            failed_third=Count(Case(When(total_score__gte=40, total_score__lt=60, then=1))),
-            )
+        chart = UserScore.sort_userscores(userscores)
     elif request.method == 'POST':
         f = request.FILES.get('file')
         wb = xlrd.open_workbook(
