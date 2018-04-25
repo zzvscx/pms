@@ -29,11 +29,10 @@ class MsgType(object):
                 <FromUserName><![CDATA[%s]]></FromUserName>
                 <CreateTime>%s</CreateTime>
                 %s
-                <FuncFlag>%s</FuncFlag>
             </xml>'''
         
         content = self.get_xml()
-        full_xml = container %(msg['FromUserName'], msg['ToUserName'], str(int(time.time())), content, '1' if self.funcflag else '0')
+        full_xml = container %(msg['FromUserName'], msg['ToUserName'], str(int(time.time())), content)
         return full_xml
     
     def get_xml(self):
