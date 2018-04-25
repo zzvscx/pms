@@ -24,13 +24,13 @@ class MsgType(object):
     
     def get_ret_xml(self, msg):
         container = '''
-<xml>
-    <ToUserName><![CDATA[%s]]></ToUserName>
-    <FromUserName><![CDATA[%s]]></FromUserName>
-    <CreateTime>%s</CreateTime>
-%s
-    <FuncFlag>%s</FuncFlag>
-</xml>'''
+            <xml>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
+                <CreateTime>%s</CreateTime>
+                %s
+                <FuncFlag>%s</FuncFlag>
+            </xml>'''
         
         content = self.get_xml()
         full_xml = container %(msg['FromUserName'], msg['ToUserName'], str(int(time.time())), content, '1' if self.funcflag else '0')
@@ -45,7 +45,7 @@ class Text(MsgType):
     xmltempl = '''
     <MsgType><![CDATA[%s]]></MsgType>
     <Content><![CDATA[%s]]></Content>
-'''
+    '''
     
     def __init__(self,text, funcflag=False):
         super(Text, self).__init__(funcflag)
@@ -62,14 +62,13 @@ class Text(MsgType):
 class Music(MsgType):
 
     xmltempl = '''
- <MsgType><![CDATA[music]]></MsgType>
- <Music>
- <Title><![CDATA[%s]]></Title>
- <Description><![CDATA[%s]]></Description>
- <MusicUrl><![CDATA[%s]]></MusicUrl>
- <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
- </Music>
-'''
+        <MsgType><![CDATA[music]]></MsgType>
+        <Music>
+            <Title><![CDATA[%s]]></Title>
+            <Description><![CDATA[%s]]></Description>
+            <MusicUrl><![CDATA[%s]]></MusicUrl>
+            <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+        </Music>'''
     def __init__(self, title, desc, musicurl, hqurl, funcflag=False):
         self.title = title
         self.desc = desc
@@ -84,20 +83,20 @@ class Music(MsgType):
 
 class News(MsgType):
     xmltempl = '''
- <MsgType><![CDATA[news]]></MsgType>
- <ArticleCount>{count}</ArticleCount>
- <Articles>
- {items}
- </Articles>
-'''
+        <MsgType><![CDATA[news]]></MsgType>
+        <ArticleCount>{count}</ArticleCount>
+        <Articles>
+            {items}
+        </Articles>'''
+
     item = '''
-<item>
-<Title><![CDATA[{title}]]></Title> 
-<Description><![CDATA[{description}]]></Description>
-<PicUrl><![CDATA[{picurl}]]></PicUrl>
-<Url><![CDATA[{url}]]></Url>
-</item>
-'''
+        <item>
+            <Title><![CDATA[{title}]]></Title> 
+            <Description><![CDATA[{description}]]></Description>
+            <PicUrl><![CDATA[{picurl}]]></PicUrl>
+            <Url><![CDATA[{url}]]></Url>
+        </item>'''
+
     articlelimit = 10
     def __init__(self, items, funcflag=False):
         super(News, self).__init__(funcflag)
@@ -118,9 +117,9 @@ class News(MsgType):
 
 class Image(MsgType):
     xmltempl = '''
- <MsgType><![CDATA[image]]></MsgType>
- <PicUrl><![CDATA[%s]]></PicUrl>
-'''
+        <MsgType><![CDATA[image]]></MsgType>
+        <PicUrl><![CDATA[%s]]></PicUrl>'''
+
     def __init__(self, picurl, funcflag=False):
         super(Image, self).__init__(self, funcflag)
         self.picurl = picurl
@@ -133,11 +132,11 @@ class Image(MsgType):
 
 class Link(MsgType):
     xmltempl = '''
-<MsgType><![CDATA[link]]></MsgType>
-<Title><![CDATA[公众平台官网链接]]></Title>
-<Description><![CDATA[公众平台官网链接]]></Description>
-<Url><![CDATA[url]]></Url>
-'''
+        <MsgType><![CDATA[link]]></MsgType>
+        <Title><![CDATA[公众平台官网链接]]></Title>
+        <Description><![CDATA[公众平台官网链接]]></Description>
+        <Url><![CDATA[url]]></Url>'''
+
     def __init__(self, title, desc, url):
         self.title = title
         self.description = desc
@@ -147,12 +146,12 @@ class Link(MsgType):
 class Location(MsgType):
     
     xmltempl = '''
-<MsgType><![CDATA[location]]></MsgType>
-<Location_X>23.134521</Location_X>
-<Location_Y>113.358803</Location_Y>
-<Scale>20</Scale>
-<Label><![CDATA[位置信息]]></Label>
-'''
+        <MsgType><![CDATA[location]]></MsgType>
+        <Location_X>23.134521</Location_X>
+        <Location_Y>113.358803</Location_Y>
+        <Scale>20</Scale>
+        <Label><![CDATA[位置信息]]></Label>'''
+
     def __init__(self, loc_x, loc_y, scale, label):
         self.location_x = loc_x
         self.location_y = loc_y
@@ -163,13 +162,12 @@ class Location(MsgType):
 class Transfer_Customer_Service(MsgType):
 
     xmltempl = '''
-<xml>
-<ToUserName><![CDATA[{touser}]]></ToUserName>
-<FromUserName><![CDATA[{fromuser}]]></FromUserName>
-<CreateTime>{CreateTime}</CreateTime>
-<MsgType><![CDATA[transfer_customer_service]]></MsgType>
-</xml>
-'''
+    <xml>
+        <ToUserName><![CDATA[{touser}]]></ToUserName>
+        <FromUserName><![CDATA[{fromuser}]]></FromUserName>
+        <CreateTime>{CreateTime}</CreateTime>
+        <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+    </xml>'''
 
     def __init__(self, msg):
         self.msg = msg
@@ -253,6 +251,20 @@ class WeixinBase(object):
     def get_music(self):
         return None
 
+from collections import defaultdict
+Handler = defaultdict(lambda : defaultdict(lambda : defaulthandler))
+
+def defaulthandler(msg):
+    # if msg["MsgType"] == "CLICK":
+    #     wx = WeixinEvent.objects.filter(type='C', event_key = msg["EventKey"])
+    #     print wx
+    #     if wx.exist():
+    #         if wx.response_type == "T":
+    #             return Text(wx.response)
+    #         else:
+    #             return News(json.loads(wx.response))
+    return Text("oops,暂不开放该功能")
+
 
 @csrf_exempt
 def handleRequest(request, wxclass=WeixinBase):  
@@ -261,7 +273,6 @@ def handleRequest(request, wxclass=WeixinBase):
         response = HttpResponse(checkSignature(request),content_type="text/plain")
         return response  
     elif request.method == 'POST':
-
         if checkSignature(request) is None:
             return HttpResponse("None")
         rawStr = smart_unicode(request.body)
@@ -272,10 +283,10 @@ def handleRequest(request, wxclass=WeixinBase):
             res = handler.get(msg["Event"], defaulthandler)(msg)
         else:
             res = handler(msg)
-        #self.msg_dict = msg
-        #self.fromuser = self.getfromuser()
-        #wx = wxclass(request)
-        #re_msg = wx.response_msg()
+        self.msg_dict = msg
+        self.fromuser = self.getfromuser()
+        wx = wxclass(request)
+        re_msg = wx.response_msg()
         
         response = HttpResponse(res.get_ret_xml(msg),content_type="application/xml")
         
@@ -312,7 +323,6 @@ def parseMsgXml(msg):
     #print msg
     return msg
 
-
 def register(msgType, event = None):
     def _inner(func):
         if msgType == "event" and event is None:
@@ -323,46 +333,3 @@ def register(msgType, event = None):
             Handler[msgType] = func
         return func
     return _inner
-
-def defaulthandlerDYH(msg):
-
-    def subscribe(msg):
-        try:
-            wxuser = WeixinUser.objects.get(openid = msg["FromUserName"])
-        except WeixinUser.DoesNotExist:
-            wxuser = WeixinUser()
-        wxuser.openid = msg["FromUserName"]
-        wxuser.subscribe = 1
-        wxuser.save()
-        return Text(('欢迎关注长安大学学生成绩管理系统服务号'))
-
-# @csrf_exempt
-# def handleRequestDYH(request, wxclass=WeixinBase):  
-    
-#     if request.method == 'GET':
-#         response = HttpResponse(checkSignature(request),content_type="text/plain")
-#         return response  
-#     elif request.method == 'POST':
-
-#         #if checkSignature(request) is None:
-#             #return HttpResponse("None")
-#         rawStr = smart_unicode(request.body)
-#         print rawStr
-#         msg = parseMsgXml(rawStr)  
-#         #handler = Handler.get(msg["MsgType"], defaulthandlerDYH)
-#         handler = defaulthandlerDYH
-#         #if isinstance(handler, dict):
-#             #res = handler.get(msg["Event"], defaulthandler)(msg)
-#         #else:
-#         res = handler(msg)
-#         #self.msg_dict = msg
-#         #self.fromuser = self.getfromuser()
-#         #wx = wxclass(request)
-#         #re_msg = wx.response_msg()
-        
-#         response = HttpResponse(res.get_ret_xml(msg),content_type="application/xml")
-        
-#         return response  
-
-#     else: 
-#         return HttpResponse("Not Support") 
