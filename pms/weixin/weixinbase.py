@@ -27,8 +27,8 @@ class MsgType(object):
 
         container = '''
             <xml>
-                <ToUserName><%s</ToUserName>
-                <FromUserName><%s</FromUserName>
+                <ToUserName><![CDATA[%s]]></ToUserName>
+                <FromUserName><![CDATA[%s]]></FromUserName>
                 <CreateTime>%s</CreateTime>
                 %s
             </xml>'''
@@ -320,13 +320,3 @@ def parseMsgXml(msg):
     #print msg
     return msg
 
-def register(msgType, event = None):
-    def _inner(func):
-        if msgType == "event" and event is None:
-            Handler[msgType][func.__name__] = func
-        elif event:
-            Handler[msgType][event] = func
-        else:
-            Handler[msgType] = func
-        return func
-    return _inner
