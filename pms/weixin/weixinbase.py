@@ -12,8 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.encoding import smart_unicode  
 from django.db import transaction
 
-from promotion.models import Invitation
-from .models import WeixinEvent, WeixinUser, WeixinVoucher
+from .models import  WeixinUser
 
 TOKEN = "changan"
 
@@ -254,19 +253,6 @@ class WeixinBase(object):
     def get_music(self):
         return None
 
-def defaulthandler(msg):
-    if msg["MsgType"] == "CLICK":
-        wx = WeixinEvent.objects.filter(type='C', event_key = msg["EventKey"])
-        print wx
-        if wx.exist():
-            if wx.response_type == "T":
-                return Text(wx.response)
-            else:
-                return News(json.loads(wx.response))
-    return Text("")
-
-from collections import defaultdict
-Handler = defaultdict(lambda : defaultdict(lambda : defaulthandler))
 
 @csrf_exempt
 def handleRequest(request, wxclass=WeixinBase):  

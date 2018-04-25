@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from django.shortcuts import render
 from django.http import Http404, HttpResponse
-from useraccount.models import user
+from useraccount.models import User
 from django.core.cache import cache
 from .models import WeixinKey
 # Create your views here.
