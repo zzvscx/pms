@@ -4,7 +4,7 @@
 from django.conf.urls import patterns, include, url
 
 from weixin.views import *
-from weixin.weixinbase import handleRequest,
+from weixin.weixinbase import handleRequest
 
 urlpatterns = patterns(\
     'weixin.views',
