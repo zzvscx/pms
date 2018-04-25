@@ -13,5 +13,5 @@ urlpatterns = patterns(\
 urlpatterns += patterns(\
     '',
     url(r'^$', handleRequest),
-    url(r'^bind/$', wx_service_number_bind),
+    # url(r'^bind/$', wx_service_number_bind),
     )

@@ -350,33 +350,33 @@ def defaulthandlerDYH(msg):
         wxuser.save()
         return Text(('欢迎关注长安大学学生成绩管理系统服务号'))
 
-@csrf_exempt
-def handleRequestDYH(request, wxclass=WeixinBase):  
+# @csrf_exempt
+# def handleRequestDYH(request, wxclass=WeixinBase):  
     
-    if request.method == 'GET':
-        response = HttpResponse(checkSignature(request),content_type="text/plain")
-        return response  
-    elif request.method == 'POST':
+#     if request.method == 'GET':
+#         response = HttpResponse(checkSignature(request),content_type="text/plain")
+#         return response  
+#     elif request.method == 'POST':
 
-        #if checkSignature(request) is None:
-            #return HttpResponse("None")
-        rawStr = smart_unicode(request.body)
-        print rawStr
-        msg = parseMsgXml(rawStr)  
-        #handler = Handler.get(msg["MsgType"], defaulthandlerDYH)
-        handler = defaulthandlerDYH
-        #if isinstance(handler, dict):
-            #res = handler.get(msg["Event"], defaulthandler)(msg)
-        #else:
-        res = handler(msg)
-        #self.msg_dict = msg
-        #self.fromuser = self.getfromuser()
-        #wx = wxclass(request)
-        #re_msg = wx.response_msg()
+#         #if checkSignature(request) is None:
+#             #return HttpResponse("None")
+#         rawStr = smart_unicode(request.body)
+#         print rawStr
+#         msg = parseMsgXml(rawStr)  
+#         #handler = Handler.get(msg["MsgType"], defaulthandlerDYH)
+#         handler = defaulthandlerDYH
+#         #if isinstance(handler, dict):
+#             #res = handler.get(msg["Event"], defaulthandler)(msg)
+#         #else:
+#         res = handler(msg)
+#         #self.msg_dict = msg
+#         #self.fromuser = self.getfromuser()
+#         #wx = wxclass(request)
+#         #re_msg = wx.response_msg()
         
-        response = HttpResponse(res.get_ret_xml(msg),content_type="application/xml")
+#         response = HttpResponse(res.get_ret_xml(msg),content_type="application/xml")
         
-        return response  
+#         return response  
 
-    else: 
-        return HttpResponse("Not Support") 
+#     else: 
+#         return HttpResponse("Not Support") 

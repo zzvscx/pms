@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^useraccount/',include('useraccount.urls')),
     url(r'post/', include('post.urls')),
+    url(r'weixin/',include('weixin.urls'))
     url(r'^index/$', views.IndexView.as_view(), name='index'),
     url(r'^about/$', views.about, name='about'),
 ]
