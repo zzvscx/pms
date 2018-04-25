@@ -1,8 +1,9 @@
 #coding:utf-8
 
 
-
+import re
 import json
+from lxml import etree
 import xml.etree.ElementTree as ET  
 import time
 import hashlib  
@@ -23,6 +24,7 @@ class MsgType(object):
         self.funcflag = funcflag
     
     def get_ret_xml(self, msg):
+
         container = '''
             <xml>
                 <ToUserName><![CDATA[%s]]></ToUserName>
@@ -274,8 +276,8 @@ def handleRequest(request, wxclass=WeixinBase):
     elif request.method == 'POST':
         # if checkSignature(request) is None:
         #     return HttpResponse("None")
-
         rawStr = smart_unicode(request.body)
+        print rawStr
         msg = parseMsgXml(rawStr)  
         handler = Handler.get(msg["MsgType"], defaulthandler)
         if isinstance(handler, dict):
@@ -307,7 +309,8 @@ def checkSignature(request):
         return None#"%s,%s,%s,%s" % (signature,timestamp,nonce,echoStr)  
   
 def parseMsgXml(msg):  
-    rootElem = ET.fromstring(msg)
+    parser = etree.XMLParser(recover=True)
+    rootElem=etree.fromstring(msg, parser=parser)
     msg = {"data": msg}
     if rootElem.tag == 'xml':  
         for child in rootElem:  
