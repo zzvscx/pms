@@ -273,21 +273,16 @@ def handleRequest(request, wxclass=WeixinBase):
         response = HttpResponse(checkSignature(request),content_type="text/plain")
         return response  
     elif request.method == 'POST':
-        if checkSignature(request) is None:
-            return HttpResponse("None")
+        # if checkSignature(request) is None:
+        #     return HttpResponse("None")
+
         rawStr = smart_unicode(request.body)
-        print rawStr
         msg = parseMsgXml(rawStr)  
         handler = Handler.get(msg["MsgType"], defaulthandler)
         if isinstance(handler, dict):
             res = handler.get(msg["Event"], defaulthandler)(msg)
         else:
             res = handler(msg)
-        self.msg_dict = msg
-        self.fromuser = self.getfromuser()
-        wx = wxclass(request)
-        re_msg = wx.response_msg()
-        
         response = HttpResponse(res.get_ret_xml(msg),content_type="application/xml")
         
         return response  
