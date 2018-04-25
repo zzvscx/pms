@@ -27,8 +27,8 @@ class MsgType(object):
 
         container = '''
             <xml>
-                <ToUserName><![CDATA[%s]]></ToUserName>
-                <FromUserName><![CDATA[%s]]></FromUserName>
+                <ToUserName><%s</ToUserName>
+                <FromUserName><%s</FromUserName>
                 <CreateTime>%s</CreateTime>
                 %s
             </xml>'''
@@ -277,8 +277,8 @@ def handleRequest(request, wxclass=WeixinBase):
         # if checkSignature(request) is None:
         #     return HttpResponse("None")
         rawStr = smart_unicode(request.body)
-        print rawStr
-        msg = parseMsgXml(rawStr)  
+        msg = parseMsgXml(rawStr)
+        print msg  
         handler = Handler.get(msg["MsgType"], defaulthandler)
         if isinstance(handler, dict):
             res = handler.get(msg["Event"], defaulthandler)(msg)
