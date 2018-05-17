@@ -139,6 +139,7 @@ def course_detail(request, pk):
         course = Course.objects.get(admin=request.user, pk=pk)
         userscores = UserScore.objects.filter(course=course)
         chart = UserScore.sort_userscores(userscores)
+        print chart
     elif request.method == 'POST':
         f = request.FILES.get('file')
         wb = xlrd.open_workbook(

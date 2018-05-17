@@ -62,17 +62,17 @@
         <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a  {% if request.user.staff %} 
+            <li><a  {% if request.user.is_staff %} 
                         href="/useraccount/course_detail/{{ pk }}/" 
                     {% else %}
                         href="/useraccount/points/" 
                     {% endif %}><i class="i"></i> 表格</a></li>
-            <li><a {% if request.user.staff %} 
+            <li><a {% if request.user.is_staff %} 
                         href="/useraccount/course_detail/{{ pk }}/?chart_type=pie" 
                     {% else %}
                         href="/useraccount/points/?chart_type=pie" 
                     {% endif %}><i class="i"></i> 饼形图</a></li>
-            <li><a {% if request.user.staff %} 
+            <li><a {% if request.user.is_staff %} 
                         href="/useraccount/course_detail/{{ pk }}/?chart_type=bar" 
                     {% else %}
                         href="/useraccount/points/?chart_type=bar" 
