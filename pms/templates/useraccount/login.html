@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="container">
-    <form class="form-signin" action = {% if source  %}"{%  url 'login' %}"{% else %} "{% url 'wxbind' %}" method="post">
+    <form class="form-signin" action = {% if source  %}"{%  url 'login' %}"{% else %} "{% url 'wxbind' %}"{% endif %} method="post">
       {% csrf_token %}
       <h2 class="form-signin-heading">个人信息</h2>
       <label for="inputEmail" class="sr-only">学号/用户名</label>
