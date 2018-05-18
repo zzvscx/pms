@@ -15,7 +15,7 @@ def deploy():
         cd {} &&
         ~/venv/venv_pms/bin/pip install -r ../requirements.txt &&
         ~/venv/venv_pms/bin/python manage.py migrate &&
-        ~/venv/venv_pms/bin/python manage.py python manage.py collectstatic
+        ~/venv/venv_pms/bin/python manage.py collectstatic
         '''.format(source_folder))
     sudo('restart pms')
     sudo('service nginx reload')
