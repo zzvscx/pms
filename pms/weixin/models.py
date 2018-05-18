@@ -5,6 +5,7 @@ from django.db import models
 from useraccount.models import User
 import urllib2
 import json
+import requests
 from django.core.cache import cache
 
 # Create your models here.
@@ -41,7 +42,7 @@ class WeixinUser(models.Model):
                 self.user = None
                 self.save()
     
-    def notification_for_userscore(userscore):
+    def notification_for_userscore(self,userscore):
         template_id = 'CgCZesvkbiBLTD169XVQaMK3e3BPWftUUuTvDtvY2IY'
         url = ''
         data = {
@@ -57,12 +58,12 @@ class WeixinUser(models.Model):
                 'value': str(userscore.user.stuId),
                 'color': '#173177'
             },
-            'course': {    
-                'value': userscore.course.name,
+            'score': {    
+                'value': str(userscore.total_score),
                 'color': '#173177'
             },
-            'points': {      # 剩余积分
-                'value': str(usersocre.total_score),
+            'points': { 
+                'value': str(userscore.points),
                 'color': '#173177'
             },
             'remark':{
@@ -81,7 +82,7 @@ class WeixinUser(models.Model):
                 'color': '#173177'
             },
             'keyword1': {        #账号
-                'value': self.user.username + ' ' + self.user.stuId,
+                'value': self.user.username + ' ' + str(self.user.stuId),
                 'color': '#173177'
             },
             'keyword2': {        #绑定时间
