@@ -17,8 +17,7 @@
         background-image:linear-gradient(to bottom, #428bca 0%, #428bca 100%);
     }
     .post-title{
-        position: relative;
-        left: 70px;
+        margin-left: -170px;
     }
     .post-title > h2{
         color:#000000;
@@ -59,7 +58,7 @@
                     <article class="post post-{{ post.pk }}">
                         <header class="entry-headder">
                             <h1 class="entry-meta">
-                                <a href="{{ post.get_absolute_url }}"><div class="post-title"><h2>{{ post.title }}</h2></div></a>
+                                <a  href="{{ post.get_absolute_url }}"><div class="post-title"><h2>{{ post.title }}</h2></div></a>
                             </h1>
                             <div class="entry-meta">
                                 <span class="post-category">{{ post.category.name }} | </span>

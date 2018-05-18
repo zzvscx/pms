@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from useraccount.models import User
+import urllib2
+import json
+from django.core.cache import cache
 
 # Create your models here.
 
@@ -37,7 +40,61 @@ class WeixinUser(models.Model):
         if str(errcode) == '43004':
                 self.user = None
                 self.save()
+    
+    def notification_for_userscore(userscore):
+        template_id = 'CgCZesvkbiBLTD169XVQaMK3e3BPWftUUuTvDtvY2IY'
+        url = ''
+        data = {
+            'title': {         # 提醒
+                'value': u'您的{}成绩已更新'.format(userscore.course.name),
+                'color': '#173177'
+            },
+            'username': {      # 用户姓名
+                'value': userscore.user.name + ' ' + userscore.user.username,
+                'color': '#173177'
+            },
+            'stuid': {     
+                'value': str(userscore.user.stuId),
+                'color': '#173177'
+            },
+            'course': {    
+                'value': userscore.course.name,
+                'color': '#173177'
+            },
+            'points': {      # 剩余积分
+                'value': str(usersocre.total_score),
+                'color': '#173177'
+            },
+            'remark':{
+                'value': u'如发现成绩错误，请登录长安大学学生成绩管理系统提交反馈，管理员会在一至三个工作日内进行审核和修复。',
+                'color': '#FF0000'
+            }
+        }
+        self.notification_to_wxuser(template_id, data, url)
+        
+    def notification_for_bind(self):
+        template_id = 'OdQyQOrPXKWabH02uVZSCDOHZbwc75eaY8J8F5jgTYU'
+        url = ''
+        data = {
+            'first': {           #提醒
+                'value': '您已经绑定长安大学学生成绩管理系统',
+                'color': '#173177'
+            },
+            'keyword1': {        #账号
+                'value': self.user.username + ' ' + self.user.stuId,
+                'color': '#173177'
+            },
+            'keyword2': {        #绑定时间
+                'value': self.last_modified_time.strftime("%Y/%m/%d %H:%M:%S"),
+                'color': '#173177'
+            },
+            'remark': {          
+                'value': u'如发现成绩错误，请登录长安大学学生成绩管理系统提交反馈，管理员会在一至三个工作日内进行审核和修复。',
+                'color': '#173177'
+            }
 
+        }
+        self.notification_to_wxuser(template_id, data, url)
 
 class WeixinKey(models.Model):
 

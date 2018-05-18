@@ -1,7 +1,9 @@
 #-*- coding:utf-8 -*-
+import requests
 from django.shortcuts import render
 from django.http import Http404, HttpResponse
 from useraccount.models import User
+from django.db.models import Q
 from django.core.cache import cache
 from .models import WeixinKey
 # Create your views here.
@@ -11,9 +13,9 @@ def is_weixin_browser(request):
     return r.search(request.META.get("HTTP_USER_AGENT", ""))
 
 
-def wx_service_numnber_bind(request):
-    if not is_weixin_browser(request):
-        raise Http404
+def wx_service_number_bind(request):
+    # if not is_weixin_browser(request):
+    #     raise Http404
 
     if request.method =='GET':
         openid = request.session.get('fwh_openid')
@@ -30,10 +32,20 @@ def wx_service_numnber_bind(request):
     elif request.method == "POST":
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
-        user = auth.authenticate(username=username, password=password)
-        if user:
+        if request.session.get('fwh_openid',''):
+            user = User.objects.filter(Q(username=username)|Q(stuId=username)).first()
+            if user:
+                fwh_openid = request.session['fwh_openid']
+                fwh_user = WeixinUser.objects.filter(openid=fwh_openid,subscribe=1).first()
+            if fwh_user:
+                fwh_user.user = user
+                fwh_user.desc = 'fwh_user'
+                fwh_user.save()
+            else:
+                fwh_user = WeixinUser(user=user, openid=fwh_openid,subscribe=1,desc='fwh_user')
+                fwh_user.save()
+            fwh_user.notification_for_bind()
             return render(request,'weixin/fwhbind_result.html',{'result':u'绑定成功'})
-        else:
-            return render(request,'useraccount/login.html', {'source':'wxfwh', 'error_message': u'账号或密码错误，请重新登录！'})
-
+    return render(request,'useraccount/login.html', {'source':'wxfwh', 'error_message': u'账号或密码错误，请重新登录！'})
+        
 
