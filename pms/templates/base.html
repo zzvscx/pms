@@ -52,6 +52,9 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% if request.user.is_authenticated %} {{ request.user.username }}{%else%}请登录 {% endif %} <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 {% if request.user.is_authenticated %}
+                  {% if request.user.is_staff %}
+                    <li><a href="/admin/">后台</a></li>
+                  {% endif %}
                     <li><a href="{% url 'change_password' %}">修改密码</a></li>
                     <li><a href="{% url 'logout' %}">退出登录</a></li>
                 {% else %}
@@ -69,15 +72,17 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li id='index'><a href="{% url 'index' %}">首页</a></li>
-                {% if not request.user.is_staff %}
+                {% if request.user.is_authenticated %}
+                  {% if request.user.is_staff %}
+                    <li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
+                    <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
+                  {% else %}
                     <li id='user_detail'> <a href="{% url 'user_detail' %}">个人信息 </a></li>
                     <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
                     <li id='courses'><a href="{% url 'user_points' %}">我的成绩</a></li>
-                {% elif request.user %}
-                    <li id='courses'><a href="{% url 'courses' %}">我的课程 </a></li>
-                    <li id='class_schedule'><a href="{% url 'class_schedule' %}">我的课表</a></li>
+                  {% endif %}  
+                  <li id='about'><a href="{% url 'about' %}">反馈</a></li>
                 {% endif %}
-                <li id='about'><a href="{% url 'about' %}">反馈</a></li>
             </ul>
         </div>
         <div style='margin-left: 17%; margin-right: 1%'id="pms_content">
