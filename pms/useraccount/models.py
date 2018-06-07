@@ -132,6 +132,7 @@ class UserScore(models.Model):
 
 @receiver(post_save, sender=UserScore)
 def notifi_to_user(*args, **kwargs):
+    from weixin.models import WeixinUser
     instance = kwargs.get('instance')
     wx_user = WeixinUser.objects.filter(user=instance.user).first()
     if wx_user:
