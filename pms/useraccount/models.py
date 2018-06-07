@@ -136,7 +136,7 @@ def notifi_to_user(*args, **kwargs):
     instance = kwargs.get('instance')
     wx_user = WeixinUser.objects.filter(user=instance.user).first()
     if wx_user:
-        wx.user.notification_for_userscore(instance)
+        wx_user.notification_for_userscore(instance)
 
 @receiver(pre_save,sender=UserScore)
 def update_data(*args,**kwargs):
