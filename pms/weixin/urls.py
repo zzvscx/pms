@@ -8,5 +8,5 @@ from weixin.weixinbase import handleRequest
 
 urlpatterns=[
     url(r'^$', handleRequest),
-    url(r'^bind/$', wx_service_number_bind, name='wxbind'),
+    # url(r'^bind/$', wx_service_number_bind, name='wxbind'),
     ]
