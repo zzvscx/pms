@@ -134,9 +134,9 @@ def courses(request):
 def course_detail(request, pk):
     if not request.user.is_staff:
         raise Http404
+    course = Course.objects.get(admin=request.user, pk=pk)
     if request.method == 'GET':
         chart_type = request.GET.get('chart_type','table')
-        course = Course.objects.get(admin=request.user, pk=pk)
         userscores = UserScore.objects.filter(course=course)
         chart = UserScore.sort_userscores(userscores)
         print chart
@@ -157,14 +157,15 @@ def course_detail(request, pk):
             usual = col[3] or 0
             experimental = col[4] or 0
             retest = col[5] or 0
-            user = User.objects.get(stuId=col[0])
-            userscore = UserScore.objects.filter(course=course, user=user)
-            if userscore:
-                userscore.update(midterm=midterm, final_exam=final_exam,
-                                    usual=usual, experimental=experimental, retest=retest)
-            else:
-                UserScore.objects.create(course=course, user=user, midterm=midterm, final_exam=final_exam,
-                                            usual=usual, experimental=experimental, retest=retest)
+            user = User.objects.filter(stuId=col[0]).first()
+            if user:
+                userscore = UserScore.objects.filter(course=course, user=user)
+                if userscore:
+                    userscore.update(midterm=midterm, final_exam=final_exam,
+                                        usual=usual, experimental=experimental, retest=retest)
+                else:
+                    UserScore.objects.create(course=course, user=user, midterm=midterm, final_exam=final_exam,
+                                                usual=usual, experimental=experimental, retest=retest)
     if request.GET.get('download', False):
         title = [u'姓名', u'英文名', u'学号', '期中考试成绩', u'期末考试成绩',
                  u'平时成绩', u'实验成绩', u'补考成绩', u'总分', u'绩点']
