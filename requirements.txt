@@ -9,7 +9,7 @@ enum34==1.1.6
 Fabric==1.14.0
 idna==2.6
 ipaddress==1.0.22
-lxml==4.2.1
+lxml==4.9.1
 Markdown==2.6.11
 paramiko==2.4.1
 Pillow==5.1.0
